@@ -1,5 +1,13 @@
 fileFormatVersion: 2
 guid: 2d3e6759ead9dad46b2fc26572e47939
+AssetOrigin:
+  serializedVersion: 1
+  productId: 296953
+  packageName: Cute Chibi Character Free Pack (Unique Skill Animated Prefab with
+    SFX)
+  packageVersion: 1.0
+  assetPath: Assets/Chibi Character Free (Unique Skill Animated Prefab with SFX)/Demo/Art/Summon/summon.png
+  uploadId: 695069
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -57,7 +65,7 @@ TextureImporter:
       213: -3176285243629496598
     second: summon_17
   externalObjects: {}
-  serializedVersion: 12
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -121,7 +129,7 @@ TextureImporter:
   swizzle: 50462976
   cookieLightType: 0
   platformSettings:
-  - serializedVersion: 3
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 8192
     resizeAlgorithm: 1
@@ -131,9 +139,10 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
+  - serializedVersion: 4
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -143,9 +152,10 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
+  - serializedVersion: 4
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -155,10 +165,11 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: iPhone
+  - serializedVersion: 4
+    buildTarget: iOS
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -167,6 +178,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -183,6 +195,7 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.5, y: 0.115}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -204,6 +217,7 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.5, y: 0.115}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -225,6 +239,7 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.5, y: 0.115}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -246,6 +261,7 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.5, y: 0.115}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -267,6 +283,7 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.5, y: 0.115}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -288,6 +305,7 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.5, y: 0.115}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -309,6 +327,7 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.5, y: 0.115}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -330,6 +349,7 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.5, y: 0.115}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -351,6 +371,7 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.5, y: 0.115}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -372,6 +393,7 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.5, y: 0.115}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -383,6 +405,7 @@ TextureImporter:
       edges: []
       weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
     spriteID: 64455d0a870f6534390748045b30f480
@@ -392,6 +415,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
     nameFileIdTable:
       summon_0: -4631336749209548592
       summon_1: -2921172321250403043
@@ -408,11 +433,3 @@ TextureImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 296953
-  packageName: Cute Chibi Character Free Pack (Unique Skill Animated Prefab with
-    SFX)
-  packageVersion: 1.0
-  assetPath: Assets/Chibi Character Free (Unique Skill Animated Prefab with SFX)/Demo/Art/Summon/summon.png
-  uploadId: 695069

@@ -51,5 +51,8 @@ TagManager:
   - name: wall
     uniqueID: 3472809323
     locked: 0
+  - name: path
+    uniqueID: 976348737
+    locked: 0
   m_RenderingLayers:
   - Default

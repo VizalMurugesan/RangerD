@@ -2,8 +2,9 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
-  tags: []
+  serializedVersion: 3
+  tags:
+  - Character
   layers:
   - Default
   - TransparentFX
@@ -11,8 +12,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - BaseGrass
+  - BaseGround
   - 
   - 
   - 
@@ -41,3 +42,14 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BaseGrass
+    uniqueID: 1081023143
+    locked: 0
+  - name: BaseGround
+    uniqueID: 542499957
+    locked: 0
+  - name: wall
+    uniqueID: 3472809323
+    locked: 0
+  m_RenderingLayers:
+  - Default

@@ -8,24 +8,32 @@ using UnityEngine.Tilemaps;
 
 public class TileManager : MonoBehaviour
 {
-    [SerializeField] int MapWidth;
-    [SerializeField] int MapHeight;
+    [SerializeField] public int MapWidth;
+    [SerializeField] public int MapHeight;
     [SerializeField] float PerlinMapScale;
+
+    [SerializeField] float BushOccurence;
+    [SerializeField] float WhiteFlowerOcurrence;
+    [SerializeField] float YeloowFlowerOccurence;
+    [SerializeField] float GrassOcurrence;
 
     [SerializeField] Tilemap BaseGrass;
     [SerializeField] Tilemap BaseGround;
+    [SerializeField] Tilemap WhiteFlower;
+    [SerializeField] Tilemap YellowFlower;
     
 
     [SerializeField] List<Tile> GrassTiles= new List<Tile>();
     [SerializeField] List<Tile> BushTiles = new List<Tile>();
-    [SerializeField] List<Tile> FlowerTiles = new List<Tile>();
+    [SerializeField] List<Tile> WhiteFlowerTiles = new List<Tile>();
+    [SerializeField] List<Tile> YellowFlowerTiles = new List<Tile>();
     [SerializeField] Tile BaseGrassTile;
 
     float[,] HeightMap;
     void Start()
     {
-        GenerateBaseGrass(MapWidth,MapHeight);
-        GenerateBaseGround(MapWidth,MapHeight);
+        //GenerateBaseGrass(MapWidth,MapHeight);
+        //GenerateBaseGround(MapWidth,MapHeight);
     }
 
     private float[,] GenerateHeightMap(int width, int height)
@@ -50,12 +58,14 @@ public class TileManager : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
-                if (heightMap[i, j] <= 0.2f)
+                if (heightMap[i, j] <= GrassOcurrence)
                     mapType[i, j] = "G";
-                else if (heightMap[i, j] <= 0.6f)
+                else if (heightMap[i, j] <= GrassOcurrence+ BushOccurence)
                     mapType[i, j] = "B";
+                else if (heightMap[i, j] <= GrassOcurrence + BushOccurence + WhiteFlowerOcurrence)
+                    mapType[i, j] = "WF";
                 else
-                    mapType[i, j] = "F";
+                    mapType[i, j] = "YF";
 
             }
         }
@@ -88,9 +98,13 @@ public class TileManager : MonoBehaviour
                         random = UnityEngine.Random.Range(0, BushTiles.Count);
                         BaseGround.SetTile(new Vector3Int(i, j, 0), BushTiles[random]);
                         break;
-                    case ("F"):
-                        random = UnityEngine.Random.Range(0, FlowerTiles.Count);
-                        BaseGround.SetTile(new Vector3Int(i, j, 0), FlowerTiles[random]);
+                    case ("WF"):
+                        random = UnityEngine.Random.Range(0, WhiteFlowerTiles.Count);
+                        WhiteFlower.SetTile(new Vector3Int(i, j, 0), WhiteFlowerTiles[random]);
+                        break;
+                    case ("YF"):
+                        random = UnityEngine.Random.Range(0, YellowFlowerTiles.Count);
+                        YellowFlower.SetTile(new Vector3Int(i, j, 0), YellowFlowerTiles[random]);
                         break;
                     default:
                         random = UnityEngine.Random.Range(0, GrassTiles.Count);
@@ -102,7 +116,7 @@ public class TileManager : MonoBehaviour
 
     }
 
-    private void GenerateBaseGrass(int width, int height)
+    public void GenerateBaseGrass(int width, int height)
     {
         for (int i = 0; i < width; i++)
         {
@@ -111,5 +125,13 @@ public class TileManager : MonoBehaviour
                 BaseGrass.SetTile(new Vector3Int(i, j, 0), BaseGrassTile);
             }
         }
+    }
+
+    public void ClearAllTiles()
+    {
+        BaseGrass.ClearAllTiles();
+        BaseGround.ClearAllTiles();
+        WhiteFlower.ClearAllTiles() ;
+        YellowFlower.ClearAllTiles();
     }
 }

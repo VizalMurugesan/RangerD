@@ -309,9 +309,9 @@ MonoBehaviour:
   MapWidth: 700
   MapHeight: 350
   PerlinMapScale: 15
-  BushOccurence: 0.5
-  WhiteFlowerOcurrence: 0.15
-  YeloowFlowerOccurence: 0.15
+  BushOccurence: 0.4
+  WhiteFlowerOcurrence: 0.2
+  YeloowFlowerOccurence: 0.2
   GrassOcurrence: 0.2
   BaseGrass: {fileID: 1692059809}
   BaseGround: {fileID: 1655806887}
@@ -379,10 +379,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1231667593}
   - {fileID: 1692059811}
   - {fileID: 1655806889}
   - {fileID: 954105737}
-  - {fileID: 1231667593}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1839735485 &1655806887 stripped

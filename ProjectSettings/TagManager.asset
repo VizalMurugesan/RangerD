@@ -48,6 +48,9 @@ TagManager:
   - name: BaseGround
     uniqueID: 542499957
     locked: 0
+  - name: Vegetation
+    uniqueID: 2564601757
+    locked: 0
   - name: path
     uniqueID: 976348737
     locked: 0

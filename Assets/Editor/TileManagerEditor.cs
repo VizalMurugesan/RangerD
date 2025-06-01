@@ -16,5 +16,13 @@ public class TileManagerEditor : Editor
             tileManager.GenerateBaseGrass(tileManager.MapWidth, tileManager.MapHeight);
             tileManager.GenerateBaseGround(tileManager.MapWidth, tileManager.MapHeight);
         }
+
+        EditorGUILayout.Space();
+
+        if(GUILayout.Button("Generate Bushes"))
+        {
+            Debug.Log("editor clicked");
+            tileManager.GenerateBushes(tileManager.MapWidth, tileManager.MapHeight);
+        }
     }
 }

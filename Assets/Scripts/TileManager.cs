@@ -8,6 +8,8 @@ using UnityEngine.Tilemaps;
 
 public class TileManager : MonoBehaviour
 {
+   public Grid grid;
+
     [SerializeField] public int MapWidth;
     [SerializeField] public int MapHeight;
     [SerializeField] float PerlinMapScale;
@@ -27,13 +29,17 @@ public class TileManager : MonoBehaviour
     [SerializeField] List<Tile> BushTiles = new List<Tile>();
     [SerializeField] List<Tile> WhiteFlowerTiles = new List<Tile>();
     [SerializeField] List<Tile> YellowFlowerTiles = new List<Tile>();
+    [SerializeField] List<GameObject> Bushes = new List<GameObject>();
+    [SerializeField] List<GameObject> GrassVegetation = new List<GameObject>();
     [SerializeField] Tile BaseGrassTile;
 
+    public Transform BushesParent;
     float[,] HeightMap;
     void Start()
     {
         //GenerateBaseGrass(MapWidth,MapHeight);
         //GenerateBaseGround(MapWidth,MapHeight);
+        grid = GetComponent<Grid>();
     }
 
     private float[,] GenerateHeightMap(int width, int height)
@@ -114,6 +120,23 @@ public class TileManager : MonoBehaviour
             }
         }
 
+    }
+
+    public void GenerateBushes(int Width, int Height)
+    {
+        float random = Random.Range(0f, 1f);
+        for (int i = 0; i < Width; i += 1)
+        {
+            for (int j = 0; j < Height; j++)
+            {
+                Vector3 Worldpos = grid.CellToWorld(new Vector3Int(i, j, 0))+ new Vector3(0.5f, 0.5f,0);
+                if (random > 0.6f)
+                {
+                    Instantiate(Bushes[0], Worldpos, Quaternion.identity, BushesParent);
+
+                }
+            }
+        }
     }
 
     public void GenerateBaseGrass(int width, int height)

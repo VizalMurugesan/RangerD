@@ -24,5 +24,13 @@ public class TileManagerEditor : Editor
             Debug.Log("editor clicked");
             tileManager.GenerateBushes(tileManager.MapWidth, tileManager.MapHeight);
         }
+
+        EditorGUILayout.Space();
+
+        if (GUILayout.Button("Generate Grass Vegetation"))
+        {
+            Debug.Log("editor clicked");
+            tileManager.GenerateGrassVegetation(tileManager.MapWidth, tileManager.MapHeight);
+        }
     }
 }

@@ -1,13 +1,17 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class Objects : MonoBehaviour
 {
-    GameObject Player ;
-    public SpriteRenderer Rendr;
-    private float YOffset = -2.5f;
+    [NonSerialized] public GameObject Player;
+    [NonSerialized] public SpriteRenderer Rendr;
+    public float YOffset = 0f;
+    [NonSerialized] public string BackLayer;
+    [NonSerialized] public string FrontLayer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public virtual void Start()
     {
         Rendr = GetComponent<SpriteRenderer>();
         if(Game.Instance.player != null)
@@ -16,26 +20,36 @@ public class Objects : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if(transform.position.y>= Player.transform.position.y - YOffset)
-        {
-            BringFront();
-        }
-        else
-        {
-            BringBack();
-        }
+        StartCoroutine(LayerCheck(collision.gameObject));
     }
 
-    private void BringFront()
+    public virtual void BringFront()
     {
-        Rendr.sortingLayerName = "Structures before player";
+        Rendr.sortingLayerName = FrontLayer;
     }
 
-    private void BringBack()
+    public virtual void BringBack()
     {
-        Rendr.sortingLayerName = "Structures after player";
+        Rendr.sortingLayerName = BackLayer;
+    }
+
+    public IEnumerator LayerCheck(GameObject objecthit)
+    {
+        while(Vector2.Distance(objecthit.transform.position, transform.position)<1.5f)
+        {
+            if (transform.position.y >= objecthit.transform.position.y - YOffset)
+            {
+                BringBack();
+            }
+            else
+            {
+                BringFront();
+            }
+            yield return null;
+        }
+        yield break;
     }
 }

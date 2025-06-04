@@ -23,6 +23,7 @@ public class TileManager : MonoBehaviour
     [SerializeField] Tilemap BaseGround;
     [SerializeField] Tilemap WhiteFlower;
     [SerializeField] Tilemap YellowFlower;
+    [SerializeField] Tilemap path;
     
 
     [SerializeField] List<Tile> GrassTiles= new List<Tile>();
@@ -129,10 +130,31 @@ public class TileManager : MonoBehaviour
         {
             for (int j = 0; j < Height; j++)
             {
-                Vector3 Worldpos = grid.CellToWorld(new Vector3Int(i, j, 0))+ new Vector3(0.5f, 0.5f,0);
-                if (random > 0.6f)
+                Vector3 Worldpos = grid.CellToWorld(new Vector3Int(i, j, 0));
+                random = Random.Range(0f, 1f);
+                if (random > 0.8f && !path.HasTile(new Vector3Int(i,j,0)))
                 {
-                    Instantiate(Bushes[0], Worldpos, Quaternion.identity, BushesParent);
+                    int randnum = Random.Range(0, Bushes.Count);
+                    Instantiate(Bushes[randnum], Worldpos, Quaternion.identity, BushesParent);
+
+                }
+            }
+        }
+    }
+
+    public void GenerateGrassVegetation(int Width, int Height)
+    {
+        float random = Random.Range(0f, 1f);
+        for (int i = 0; i < Width; i += 1)
+        {
+            for (int j = 0; j < Height; j++)
+            {
+                Vector3 Worldpos = grid.CellToWorld(new Vector3Int(i, j, 0));
+                random = Random.Range(0f, 1f);
+                if (random > 0.8f && !path.HasTile(new Vector3Int(i, j, 0)))
+                {
+                    int randnum = Random.Range(0, GrassVegetation.Count);
+                    Instantiate(GrassVegetation[randnum], Worldpos, Quaternion.identity, BushesParent);
 
                 }
             }

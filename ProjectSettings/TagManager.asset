@@ -48,7 +48,7 @@ TagManager:
   - name: BaseGround
     uniqueID: 542499957
     locked: 0
-  - name: Vegetation
+  - name: Vegetation before player
     uniqueID: 2564601757
     locked: 0
   - name: path
@@ -62,6 +62,9 @@ TagManager:
     locked: 0
   - name: player
     uniqueID: 972170679
+    locked: 0
+  - name: Vegetation after player
+    uniqueID: 2353461139
     locked: 0
   - name: Structures after player
     uniqueID: 916816047

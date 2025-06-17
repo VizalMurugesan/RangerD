@@ -151,7 +151,7 @@ public class TileManager : MonoBehaviour
             {
                 Vector3 Worldpos = grid.CellToWorld(new Vector3Int(i, j, 0));
                 random = Random.Range(0f, 1f);
-                if (random > 0.8f && !path.HasTile(new Vector3Int(i, j, 0)))
+                if (random > 0.6f && !path.HasTile(new Vector3Int(i, j, 0)))
                 {
                     int randnum = Random.Range(0, GrassVegetation.Count);
                     Instantiate(GrassVegetation[randnum], Worldpos, Quaternion.identity, BushesParent);

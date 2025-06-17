@@ -7,8 +7,12 @@ public class Objects : MonoBehaviour
     [NonSerialized] public GameObject Player;
     [NonSerialized] public SpriteRenderer Rendr;
     public float YOffset = 0f;
+    public float size = 1f;
     [NonSerialized] public string BackLayer;
     [NonSerialized] public string FrontLayer;
+    public Coroutine layerCheckCoroutine;
+    //public Sprite instance;
+    [NonSerialized] Sprite defaultSprite;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public virtual void Start()
@@ -18,12 +22,26 @@ public class Objects : MonoBehaviour
         {
             Player = Game.Instance.player.gameObject;
         }
+        defaultSprite = Rendr.sprite;
     }
 
     
     void OnTriggerEnter2D(Collider2D collision)
     {
-        StartCoroutine(LayerCheck(collision.gameObject));
+        if (layerCheckCoroutine == null && collision.CompareTag("Character"))
+        layerCheckCoroutine = StartCoroutine(LayerCheck(collision.gameObject));
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (layerCheckCoroutine != null)
+        {
+            Rendr.sprite = defaultSprite;
+            StopCoroutine(layerCheckCoroutine);
+            //Debug.Log(LayerCheck(collision.gameObject));
+        }
+            
+        layerCheckCoroutine = null;
     }
 
     public virtual void BringFront()
@@ -38,7 +56,8 @@ public class Objects : MonoBehaviour
 
     public IEnumerator LayerCheck(GameObject objecthit)
     {
-        while(Vector2.Distance(objecthit.transform.position, transform.position)<1.5f)
+        //Rendr.sprite = instance;
+        while(Vector2.Distance(objecthit.transform.position, transform.position)< size)
         {
             if (transform.position.y >= objecthit.transform.position.y - YOffset)
             {
@@ -50,6 +69,7 @@ public class Objects : MonoBehaviour
             }
             yield return null;
         }
+        //Rendr.sprite = defaultSprite;
         yield break;
     }
 }

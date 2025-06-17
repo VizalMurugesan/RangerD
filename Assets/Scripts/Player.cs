@@ -11,10 +11,12 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-        float VelocityX = Input.GetAxis("Horizontal") * MovementSpeed;
-        float VelocityY = Input.GetAxis("Vertical") * MovementSpeed;
+        float VelocityX = Input.GetAxis("Horizontal") ;
+        float VelocityY = Input.GetAxis("Vertical") ;
 
-        rb.linearVelocity = new Vector2 (VelocityX, VelocityY);
+        Vector2 movemnntInput = new Vector2 (VelocityX, VelocityY).normalized;
+
+        rb.MovePosition ((Vector2)transform.position + movemnntInput * MovementSpeed * Time.deltaTime);
 
         
     }

@@ -4,7 +4,7 @@ public class CameraController : MonoBehaviour
 {
     public float smoothSpeed = 5f;  // Adjust this for more/less smoothing
 
-    void Update()
+    void LateUpdate()
     {
         if (Game.Instance.player != null)
         {

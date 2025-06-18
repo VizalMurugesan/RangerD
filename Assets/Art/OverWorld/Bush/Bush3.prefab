@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   YOffset: 0
-  size: 2
+  size: 3
 --- !u!61 &3050039833116662277
 BoxCollider2D:
   m_ObjectHideFlags: 0

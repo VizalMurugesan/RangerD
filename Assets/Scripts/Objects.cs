@@ -28,19 +28,25 @@ public class Objects : MonoBehaviour
     
     void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log("triggered" + IsCoroutinenull(layerCheckCoroutine));
         if (layerCheckCoroutine == null && collision.CompareTag("Character"))
-        layerCheckCoroutine = StartCoroutine(LayerCheck(collision.gameObject));
+        {
+            layerCheckCoroutine = StartCoroutine(LayerCheck(collision.gameObject));
+        }
+       
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        
         if (layerCheckCoroutine != null)
         {
             Rendr.sprite = defaultSprite;
+            //Debug.Log("layercheck ended");
             StopCoroutine(layerCheckCoroutine);
             //Debug.Log(LayerCheck(collision.gameObject));
         }
-            
+
         layerCheckCoroutine = null;
     }
 
@@ -56,7 +62,7 @@ public class Objects : MonoBehaviour
 
     public IEnumerator LayerCheck(GameObject objecthit)
     {
-        //Rendr.sprite = instance;
+        Debug.Log("layercheck started");
         while(Vector2.Distance(objecthit.transform.position, transform.position)< size)
         {
             if (transform.position.y >= objecthit.transform.position.y - YOffset)
@@ -68,8 +74,18 @@ public class Objects : MonoBehaviour
                 BringFront();
             }
             yield return null;
+            Debug.Log("layerchecking");
         }
         //Rendr.sprite = defaultSprite;
+        //Debug.Log("layercheck ended");
+        layerCheckCoroutine = null;
         yield break;
+        
     }
+
+    bool IsCoroutinenull(Coroutine coroutine)
+    {
+        return (coroutine == null);
+    }
+
 }

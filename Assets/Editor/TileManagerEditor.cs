@@ -21,7 +21,7 @@ public class TileManagerEditor : Editor
 
         if(GUILayout.Button("Generate Bushes"))
         {
-            Debug.Log("editor clicked");
+            //Debug.Log("editor clicked");
             tileManager.GenerateBushes(tileManager.MapWidth, tileManager.MapHeight);
         }
 
@@ -29,8 +29,15 @@ public class TileManagerEditor : Editor
 
         if (GUILayout.Button("Generate Grass Vegetation"))
         {
-            Debug.Log("editor clicked");
+            //Debug.Log("editor clicked");
             tileManager.GenerateGrassVegetation(tileManager.MapWidth, tileManager.MapHeight);
+        }
+
+        EditorGUILayout.Space();
+
+        if(GUILayout.Button("Destroy Vegetation"))
+        {
+            tileManager.DestroyVegetation();
         }
     }
 }

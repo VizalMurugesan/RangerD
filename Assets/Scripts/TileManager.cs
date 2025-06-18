@@ -179,4 +179,13 @@ public class TileManager : MonoBehaviour
         WhiteFlower.ClearAllTiles() ;
         YellowFlower.ClearAllTiles();
     }
+
+    public void DestroyVegetation()
+    {
+        int count = BushesParent.childCount;
+        for (int i = 0; i < count; i++)
+        {
+            DestroyImmediate(BushesParent.GetChild(i).gameObject);
+        }
+    }
 }

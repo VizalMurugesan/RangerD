@@ -101,7 +101,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 587ba334d010f9b4ca2f1e6306dac87b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RendrList: []
   YOffset: 0
+  size: 3
 --- !u!61 &1931365811261816932
 BoxCollider2D:
   m_ObjectHideFlags: 0

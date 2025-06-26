@@ -126,9 +126,9 @@ public class TileManager : MonoBehaviour
     public void GenerateBushes(int Width, int Height)
     {
         float random = Random.Range(0f, 1f);
-        for (int i = 0; i < Width; i += 1)
+        for (int i = 0; i < Width; i += 2)
         {
-            for (int j = 0; j < Height; j++)
+            for (int j = 0; j < Height; j+=2)
             {
                 Vector3 Worldpos = grid.CellToWorld(new Vector3Int(i, j, 0));
                 random = Random.Range(0f, 1f);

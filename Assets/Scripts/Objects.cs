@@ -9,11 +9,22 @@ public class Objects : MonoBehaviour
     [NonSerialized] public GameObject Player;
     [NonSerialized] public SpriteRenderer Rendr;
     public List<SpriteRenderer> RendrList;
+
+    public BoxCollider2D ActualCollider;
+    public GameObject ObjectWithCollider;
+
+
     public float YOffset = 0f;
     public float size = 1f;
-    [NonSerialized] public string BackLayer;
-    [NonSerialized] public string FrontLayer;
+
+    public enum Layers { BaseGrass, BaseGround, path, VegetationBeforePlayer, StructuresBeforePlayer, VegetationOrstructures, Player, VegetationAfterPlayer, StructuresAfterPlayer, VegetationOrstructuresAfterPlayer }
+    [SerializeField] public Layers BackLayer;
+    [SerializeField] public Layers FrontLayer;
+
+
     public Coroutine layerCheckCoroutine;
+
+
     //public Sprite instance;
     //[NonSerialized] Sprite defaultSprite;
 
@@ -30,7 +41,8 @@ public class Objects : MonoBehaviour
             int childCount = gameObject.transform.childCount;
             for(int i = 0; i < childCount; i++)
             {
-                RendrList.Add(transform.GetChild(i).GetComponent<SpriteRenderer>());
+                if(transform.GetChild(i).GetComponent<SpriteRenderer>()!=null)
+                    RendrList.Add(transform.GetChild(i).GetComponent<SpriteRenderer>());
             }
         }
 
@@ -38,6 +50,13 @@ public class Objects : MonoBehaviour
         {
             Player = Game.Instance.player.gameObject;
         }
+        if(ObjectWithCollider != null)
+        {
+            ActualCollider = ObjectWithCollider.GetComponent<BoxCollider2D>();
+            ActualCollider.enabled = false;
+        }
+
+
         //defaultSprite = Rendr.sprite;
     }
 
@@ -45,6 +64,10 @@ public class Objects : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("triggered" + IsCoroutinenull(layerCheckCoroutine));
+
+        if(ActualCollider != null)
+            ActualCollider.enabled = true;
+
         if (layerCheckCoroutine == null && collision.CompareTag("Character"))
         {
             layerCheckCoroutine = StartCoroutine(LayerCheck(collision.gameObject));
@@ -60,40 +83,45 @@ public class Objects : MonoBehaviour
             //Rendr.sprite = defaultSprite;
             //Debug.Log("layercheck ended");
             StopCoroutine(layerCheckCoroutine);
+            BringFront();
+
+            if (ActualCollider != null)
+                ActualCollider.enabled = false;
+
             //Debug.Log(LayerCheck(collision.gameObject));
         }
 
         layerCheckCoroutine = null;
     }
 
-    public virtual void BringFront()
+    public void BringFront()
     {
         if(Rendr!= null)
         {
-            Rendr.sortingLayerName = FrontLayer;
+            Rendr.sortingLayerName = FrontLayer.ToString();
         }
 
         else
         {
             foreach( SpriteRenderer rend in RendrList)
             {
-                rend.sortingLayerName= FrontLayer;
+                rend.sortingLayerName= FrontLayer.ToString();
             }
         }
         
     }
 
-    public virtual void BringBack()
+    public void BringBack()
     {
         if (Rendr != null)
         {
-            Rendr.sortingLayerName = BackLayer;
+            Rendr.sortingLayerName = BackLayer.ToString();
         }
         else
         {
             foreach (SpriteRenderer rend in RendrList)
             {
-                rend.sortingLayerName = BackLayer;
+                rend.sortingLayerName = BackLayer.ToString();
             }
         }
 
@@ -118,6 +146,7 @@ public class Objects : MonoBehaviour
         //Rendr.sprite = defaultSprite;
         //Debug.Log("layercheck ended");
         layerCheckCoroutine = null;
+        BringFront();
         yield break;
         
     }

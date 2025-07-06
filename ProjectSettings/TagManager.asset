@@ -48,26 +48,29 @@ TagManager:
   - name: BaseGround
     uniqueID: 542499957
     locked: 0
-  - name: Vegetation before player
-    uniqueID: 2564601757
-    locked: 0
   - name: path
     uniqueID: 976348737
     locked: 0
-  - name: Structures before player
+  - name: VegetationBeforePlayer
+    uniqueID: 2564601757
+    locked: 0
+  - name: StructuresBeforePlayer
     uniqueID: 2847505321
     locked: 0
-  - name: wall
+  - name: VegetationOrstructures
     uniqueID: 3472809323
     locked: 0
   - name: player
     uniqueID: 972170679
     locked: 0
-  - name: Vegetation after player
+  - name: VegetationAfterPlayer
     uniqueID: 2353461139
     locked: 0
-  - name: Structures after player
+  - name: StructuresAfterPlayer
     uniqueID: 916816047
+    locked: 0
+  - name: VegetationOrstructuresAfterPlayer
+    uniqueID: 1640415665
     locked: 0
   m_RenderingLayers:
   - Default

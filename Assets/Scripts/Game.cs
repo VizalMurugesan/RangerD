@@ -23,6 +23,9 @@ public class Game : MonoBehaviour
         {
             player = GameObject.Find("Player").GetComponent<Player>();
         }
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
 //MainMenu Methods

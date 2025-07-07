@@ -6,6 +6,9 @@ public class Player : MonoBehaviour
     Vector2 movementInput = Vector2.zero;
     Rigidbody2D rb;
 
+  
+    public Game.Layers PlayerLayer = Game.Layers.Layer0;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();

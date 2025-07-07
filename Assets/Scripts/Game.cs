@@ -6,6 +6,10 @@ public class Game : MonoBehaviour
     public static Game Instance;
     public Player player;
 
+    public enum SortingLayers { BaseGrass, BaseGround, path, VegetationBeforePlayer, StructuresBeforePlayer, VegetationOrstructures, Player, VegetationAfterPlayer, StructuresAfterPlayer, VegetationOrstructuresAfterPlayer }
+
+    public enum Layers { Layer0, Layer1 };
+
     public void Awake()
     {
         if (Instance == null && Instance != this)

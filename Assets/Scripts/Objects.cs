@@ -17,9 +17,9 @@ public class Objects : MonoBehaviour
     public float YOffset = 0f;
     public float size = 1f;
 
-    public enum Layers { BaseGrass, BaseGround, path, VegetationBeforePlayer, StructuresBeforePlayer, VegetationOrstructures, Player, VegetationAfterPlayer, StructuresAfterPlayer, VegetationOrstructuresAfterPlayer }
-    [SerializeField] public Layers BackLayer;
-    [SerializeField] public Layers FrontLayer;
+    
+    [SerializeField] public Game.SortingLayers BackLayer;
+    [SerializeField] public Game.SortingLayers FrontLayer;
 
 
     public Coroutine layerCheckCoroutine;

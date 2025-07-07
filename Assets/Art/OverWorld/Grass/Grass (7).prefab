@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 562051786174976991}
   - component: {fileID: 8948595910100857291}
-  - component: {fileID: 7910189434199596717}
   - component: {fileID: 7010658800491443587}
   m_Layer: 0
   m_Name: Grass (7)
@@ -89,25 +88,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7910189434199596717
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3904007338863830641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16730c29175316f4989117d17cb407b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RendrList: []
-  ActualCollider: {fileID: 0}
-  ObjectWithCollider: {fileID: 0}
-  YOffset: 0
-  size: 3
-  BackLayer: 3
-  FrontLayer: 7
 --- !u!61 &7010658800491443587
 BoxCollider2D:
   m_ObjectHideFlags: 0

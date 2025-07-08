@@ -19,9 +19,14 @@ public class LayerTrigger : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Game.Instance.player.PlayerLayer = ToLayer;
-        ToLayerTopWallCollider.enabled = true;
-        FromLayerTopWallCollider.enabled = false;
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Game.Instance.player.ChangePlayerLayer(ToLayer);
+            ToLayerTopWallCollider.enabled = true;
+            FromLayerTopWallCollider.enabled = false;
+        }
+        
+       
     }
 
 

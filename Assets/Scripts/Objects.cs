@@ -10,8 +10,12 @@ public class Objects : MonoBehaviour
     [NonSerialized] public SpriteRenderer Rendr;
     public List<SpriteRenderer> RendrList;
 
-    public BoxCollider2D ActualCollider;
-    public GameObject ObjectWithCollider;
+    [NonSerialized] public BoxCollider2D FrontCollider;
+    [NonSerialized] public BoxCollider2D BackCollider;
+
+    public GameObject ObjectWithFrontCollider;
+    public GameObject ObjectWithBackCollider;
+    public GameObject pivot;
 
 
     public float YOffset = 0f;
@@ -43,6 +47,11 @@ public class Objects : MonoBehaviour
             {
                 if(transform.GetChild(i).GetComponent<SpriteRenderer>()!=null)
                     RendrList.Add(transform.GetChild(i).GetComponent<SpriteRenderer>());
+                if(transform.GetChild(i).gameObject.name.Equals("pivot", StringComparison.OrdinalIgnoreCase))
+                {
+                    pivot = transform.GetChild(i).gameObject;
+                }
+
             }
         }
 
@@ -50,10 +59,16 @@ public class Objects : MonoBehaviour
         {
             Player = Game.Instance.player.gameObject;
         }
-        if(ObjectWithCollider != null)
+        if(ObjectWithFrontCollider != null)
         {
-            ActualCollider = ObjectWithCollider.GetComponent<BoxCollider2D>();
-            ActualCollider.enabled = false;
+            FrontCollider = ObjectWithFrontCollider.GetComponent<BoxCollider2D>();
+            FrontCollider.enabled = false;
+        }
+
+        if (ObjectWithBackCollider != null)
+        {
+            BackCollider = ObjectWithBackCollider.GetComponent<BoxCollider2D>();
+            BackCollider.enabled = false;
         }
 
 
@@ -65,8 +80,7 @@ public class Objects : MonoBehaviour
     {
         Debug.Log("triggered" + IsCoroutinenull(layerCheckCoroutine));
 
-        if(ActualCollider != null)
-            ActualCollider.enabled = true;
+        
 
         if (layerCheckCoroutine == null && collision.CompareTag("Character"))
         {
@@ -85,8 +99,7 @@ public class Objects : MonoBehaviour
             StopCoroutine(layerCheckCoroutine);
             BringFront();
 
-            if (ActualCollider != null)
-                ActualCollider.enabled = false;
+           
 
             //Debug.Log(LayerCheck(collision.gameObject));
         }
@@ -108,6 +121,11 @@ public class Objects : MonoBehaviour
                 rend.sortingLayerName= FrontLayer.ToString();
             }
         }
+
+        if(FrontCollider != null)
+            FrontCollider.enabled = true;
+        if(BackCollider != null)
+            BackCollider.enabled = false;
         
     }
 
@@ -125,6 +143,11 @@ public class Objects : MonoBehaviour
             }
         }
 
+        if (FrontCollider != null)
+            FrontCollider.enabled = false;
+        if (BackCollider != null)
+            BackCollider.enabled = true;
+
     }
 
     public IEnumerator LayerCheck(GameObject objecthit)
@@ -132,7 +155,7 @@ public class Objects : MonoBehaviour
         Debug.Log("layercheck started");
         while(Vector2.Distance(objecthit.transform.position, transform.position)< size)
         {
-            if (transform.position.y >= objecthit.transform.position.y - YOffset && Mathf.Abs(transform.position.x - objecthit.transform.position.x)<1f)
+            if (pivot.transform.position.y >= objecthit.transform.position.y - YOffset && Mathf.Abs(transform.position.x - objecthit.transform.position.x)<1f)
             {
                 BringBack();
             }

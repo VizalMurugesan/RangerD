@@ -6,9 +6,10 @@ public class Game : MonoBehaviour
     public static Game Instance;
     public Player player;
 
-    public enum SortingLayers { BaseGrass, BaseGround, path, VegetationBeforePlayer, StructuresBeforePlayer, VegetationOrstructures, Player, VegetationAfterPlayer, StructuresAfterPlayer, VegetationOrstructuresAfterPlayer }
+    public enum SortingLayers { BaseGrass, BaseGround, path, VegetationBeforePlayer, StructuresBeforePlayer, VegetationOrstructures, Player, VegetationAfterPlayer, StructuresAfterPlayer, VegetationOrstructuresAfterPlayer, 
+                                Layer2ground, Layer2PropsBeforePlayer, playerLayer2, Layer2PropsAfterPlayer}
 
-    public enum Layers { Layer0, Layer1 };
+    public enum Layers { Layer1  , Layer2 };
 
     public void Awake()
     {

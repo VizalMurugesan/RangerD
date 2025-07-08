@@ -73,5 +73,17 @@ TagManager:
   - name: VegetationOrstructuresAfterPlayer
     uniqueID: 1640415665
     locked: 0
+  - name: Layer2ground
+    uniqueID: 4068132819
+    locked: 0
+  - name: Layer2PropsBeforePlayer
+    uniqueID: 4234485351
+    locked: 0
+  - name: Layer2Player
+    uniqueID: 30021613
+    locked: 0
+  - name: Layer2PropsAfterPlayer
+    uniqueID: 2987276035
+    locked: 0
   m_RenderingLayers:
   - Default

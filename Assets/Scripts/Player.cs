@@ -7,6 +7,8 @@ public class Player : MonoBehaviour
     Vector2 movementInput = Vector2.zero;
     Rigidbody2D rb;
 
+    Animator anim;
+
     public List<SpriteRenderer> RendrList;
     public SpriteRenderer rendr;
 
@@ -15,6 +17,8 @@ public class Player : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        anim = GetComponent<Animator>();
 
         if(GetComponent<SpriteRenderer>() != null )
             rendr = GetComponent<SpriteRenderer>();
@@ -35,11 +39,17 @@ public class Player : MonoBehaviour
 
         movementInput = new Vector2(VelocityX, VelocityY).normalized;
 
+        anim.SetFloat("movementX", movementInput.x);
+        anim.SetFloat("movementY", movementInput.y);
+
+
     }
 
     private void FixedUpdate()
     {
         rb.MovePosition(rb.position + movementInput* MovementSpeed* Time.fixedDeltaTime);
+
+        
     }
 
     public static string LayerToLayerName(Game.Layers layer)

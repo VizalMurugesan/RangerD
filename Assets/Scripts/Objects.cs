@@ -10,11 +10,7 @@ public class Objects : MonoBehaviour
     [NonSerialized] public SpriteRenderer Rendr;
     public List<SpriteRenderer> RendrList;
 
-    [NonSerialized] public BoxCollider2D FrontCollider;
-    [NonSerialized] public BoxCollider2D BackCollider;
-
-    public GameObject ObjectWithFrontCollider;
-    public GameObject ObjectWithBackCollider;
+    
     public GameObject pivot;
 
 
@@ -59,17 +55,7 @@ public class Objects : MonoBehaviour
         {
             Player = Game.Instance.player.gameObject;
         }
-        if(ObjectWithFrontCollider != null)
-        {
-            FrontCollider = ObjectWithFrontCollider.GetComponent<BoxCollider2D>();
-            FrontCollider.enabled = false;
-        }
-
-        if (ObjectWithBackCollider != null)
-        {
-            BackCollider = ObjectWithBackCollider.GetComponent<BoxCollider2D>();
-            BackCollider.enabled = false;
-        }
+        
 
 
         //defaultSprite = Rendr.sprite;
@@ -92,7 +78,7 @@ public class Objects : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         
-        if (layerCheckCoroutine != null)
+        /**if (layerCheckCoroutine != null)
         {
             //Rendr.sprite = defaultSprite;
             //Debug.Log("layercheck ended");
@@ -104,7 +90,7 @@ public class Objects : MonoBehaviour
             //Debug.Log(LayerCheck(collision.gameObject));
         }
 
-        layerCheckCoroutine = null;
+        layerCheckCoroutine = null;**/
     }
 
     public void BringFront()
@@ -122,10 +108,7 @@ public class Objects : MonoBehaviour
             }
         }
 
-        if(FrontCollider != null)
-            FrontCollider.enabled = true;
-        if(BackCollider != null)
-            BackCollider.enabled = false;
+        
         
     }
 
@@ -143,19 +126,18 @@ public class Objects : MonoBehaviour
             }
         }
 
-        if (FrontCollider != null)
-            FrontCollider.enabled = false;
-        if (BackCollider != null)
-            BackCollider.enabled = true;
+        
 
     }
 
     public IEnumerator LayerCheck(GameObject objecthit)
     {
         Debug.Log("layercheck started");
+        GameObject objecthitPivot = FindObjectHitPivot(objecthit);
+
         while(Vector2.Distance(objecthit.transform.position, transform.position)< size)
         {
-            if (pivot.transform.position.y >= objecthit.transform.position.y - YOffset && Mathf.Abs(transform.position.x - objecthit.transform.position.x)<1f)
+            if (pivot.transform.position.y >= objecthitPivot.transform.position.y - YOffset )
             {
                 BringBack();
             }
@@ -165,9 +147,10 @@ public class Objects : MonoBehaviour
             }
             yield return null;
             Debug.Log("layerchecking");
+
+
         }
-        //Rendr.sprite = defaultSprite;
-        //Debug.Log("layercheck ended");
+        
         layerCheckCoroutine = null;
         BringFront();
         yield break;
@@ -177,6 +160,19 @@ public class Objects : MonoBehaviour
     bool IsCoroutinenull(Coroutine coroutine)
     {
         return (coroutine == null);
+    }
+
+    GameObject FindObjectHitPivot(GameObject objecthit)
+    {
+        int ChildCount = objecthit.transform.childCount;
+        for (int i = 0; i < ChildCount; i++)
+        {
+            if (objecthit.transform.GetChild(i).gameObject.name.Equals("pivot"))
+                return objecthit.transform.GetChild(i).gameObject;
+
+        }
+
+        return objecthit;
     }
 
 }

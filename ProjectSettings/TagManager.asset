@@ -61,7 +61,7 @@ TagManager:
   - name: VegetationOrstructures
     uniqueID: 3472809323
     locked: 0
-  - name: player
+  - name: Player
     uniqueID: 972170679
     locked: 0
   - name: VegetationAfterPlayer
@@ -75,6 +75,9 @@ TagManager:
     locked: 0
   - name: Layer2ground
     uniqueID: 4068132819
+    locked: 0
+  - name: Layer2Structures
+    uniqueID: 1464423843
     locked: 0
   - name: Layer2PropsBeforePlayer
     uniqueID: 4234485351

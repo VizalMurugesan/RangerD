@@ -9,6 +9,8 @@ public class Game : MonoBehaviour
     public Texture2D DefaultCrossHair;
     public Texture2D AimStateCrossHair;
 
+    public Vector2 CursorOffset;
+
     public enum SortingLayers { BaseGrass, BaseGround, path, VegetationBeforePlayer, StructuresBeforePlayer, VegetationOrstructures, Player, VegetationAfterPlayer, StructuresAfterPlayer, VegetationOrstructuresAfterPlayer, 
                                 Layer2ground,Layer2Structures, Layer2PropsBeforePlayer, playerLayer2, Layer2PropsAfterPlayer}
 
@@ -36,6 +38,7 @@ public class Game : MonoBehaviour
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+        CursorOffset = new Vector2(AimStateCrossHair.width / 2f, AimStateCrossHair.height / 2f);
     }
 
 //MainMenu Methods
@@ -53,12 +56,18 @@ public class Game : MonoBehaviour
     //CrossHairMethods
     public void ChangeCursorToCrossHair()
     {
-        Cursor.SetCursor(AimStateCrossHair, Vector2.zero, CursorMode.Auto);
+        Cursor.SetCursor(AimStateCrossHair, CursorOffset, CursorMode.Auto);
         
     }
 
     public void ChangeCursorToDefault()
     {
         Cursor.SetCursor(DefaultCrossHair, Vector2.zero, CursorMode.Auto);
+    }
+
+    public Vector3 GetCursorPosition()
+    {
+        return Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        
     }
 }

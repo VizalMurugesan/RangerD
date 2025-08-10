@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
         float VelocityX = Input.GetAxis("Horizontal");
         float VelocityY = Input.GetAxis("Vertical");
 
-        Vector2 movementInput = new Vector2(VelocityX, VelocityY).normalized;
+        movementInput = new Vector2(VelocityX, VelocityY).normalized;
 
 
 
@@ -62,9 +62,9 @@ public class Player : MonoBehaviour
             Game.Instance.ChangeCursorToDefault();
             
             //Direction setting while moving
-            //if(!PlayerDirection.Equals(Direction.Right) && movementInput.x > 0) { FaceRight(); }
+            if(!PlayerDirection.Equals(Direction.Right) && movementInput.x > 0) { FaceRight(); }
      
-            //else if(!PlayerDirection.Equals(Direction.Left) && movementInput.x < 0) { FaceLeft(); }
+            else if(!PlayerDirection.Equals(Direction.Left) && movementInput.x < 0) { FaceLeft(); }
 
         }
 
@@ -151,7 +151,7 @@ public class Player : MonoBehaviour
 
     public void TurnMainHandandBody()
     {
-        Vector3 MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 MousePos = Game.Instance.GetCursorPosition();
         Vector3 MousePosPlayerPosDiff = MousePos - transform.position;
 
         float angle = Mathf.Atan2(MousePosPlayerPosDiff.y, MousePosPlayerPosDiff.x) * Mathf.Rad2Deg;
@@ -170,7 +170,7 @@ public class Player : MonoBehaviour
         }
          
         TurnBodyAccordingToAngle(finalAngle);
-        Debug.Log(finalAngle);
+        
     }
     #endregion
 
@@ -214,6 +214,7 @@ public class Player : MonoBehaviour
     {
         state = PlayerState.Attacking;
         anim.SetTrigger("attack");
+        MainHand.GetComponent<ArrowSpawner>().SpawnArrow();
         yield return new WaitForSeconds(0.7f);
         state = PlayerState.Idle;
         

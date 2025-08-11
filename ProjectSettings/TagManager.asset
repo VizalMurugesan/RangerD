@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Character
   - Vegetation
+  - Projectiles
   layers:
   - Default
   - TransparentFX
@@ -15,9 +16,9 @@ TagManager:
   - UI
   - BaseGrass
   - BaseGround
-  - 
-  - 
-  - 
+  - Character
+  - Projectiles
+  - Vegetation
   - 
   - 
   - 

@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     public SpriteRenderer rendr;
 
     public GameObject MainHand;
+    public GameObject mainhandpivot;
 
     public Game.Layers PlayerLayer = Game.Layers.Layer1;
 
@@ -82,10 +83,11 @@ public class Player : MonoBehaviour
 
         }
 
+
+
+
         
-
-
-
+        
 
 
         //rb.MovePosition((Vector2)transform.position + movementInput* MovementSpeed * Time.fixedDeltaTime);
@@ -152,7 +154,12 @@ public class Player : MonoBehaviour
     public void TurnMainHandandBody()
     {
         Vector3 MousePos = Game.Instance.GetCursorPosition();
-        Vector3 MousePosPlayerPosDiff = MousePos - transform.position;
+        Vector3 MousePosPlayerPosDiff = MousePos - mainhandpivot.transform.position;
+
+        if (MousePosPlayerPosDiff.magnitude < 0.2f)
+        {
+            return;
+        }
 
         float angle = Mathf.Atan2(MousePosPlayerPosDiff.y, MousePosPlayerPosDiff.x) * Mathf.Rad2Deg;
         float finalAngle = 0f;

@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 4584116621148007089}
   m_Layer: 0
   m_Name: Bush2
-  m_TagString: Untagged
+  m_TagString: Vegetation
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -268,8 +268,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RendrList: []
-  ActualCollider: {fileID: 0}
-  ObjectWithCollider: {fileID: 0}
+  pivot: {fileID: 2303285919031875623}
   YOffset: 0
   size: 3
   BackLayer: 3

@@ -41,7 +41,8 @@ public class Game : MonoBehaviour
         CursorOffset = new Vector2(AimStateCrossHair.width / 2f, AimStateCrossHair.height / 2f);
     }
 
-//MainMenu Methods
+    //MainMenu Methods
+    #region
     public void QuitGame()
     {
         Application.Quit();
@@ -51,9 +52,10 @@ public class Game : MonoBehaviour
     {
         SceneManager.LoadSceneAsync("Scene1");
     }
-
+    #endregion
 
     //CrossHairMethods
+    #region
     public void ChangeCursorToCrossHair()
     {
         Cursor.SetCursor(AimStateCrossHair, CursorOffset, CursorMode.Auto);
@@ -70,4 +72,21 @@ public class Game : MonoBehaviour
         return Camera.main.ScreenToWorldPoint(Input.mousePosition);
         
     }
+    #endregion
+
+    //helper methods
+    #region
+    public Vector2 UpScaleNormalize(Vector2 vector)
+    {
+        if (vector == Vector2.zero)
+            return Vector2.zero;
+
+        while (vector.magnitude <= 0.5f)
+        {
+            vector *= 1.1f; // multiply by a factor > 1 each time
+        }
+
+        return vector;
+    }
+    #endregion
 }

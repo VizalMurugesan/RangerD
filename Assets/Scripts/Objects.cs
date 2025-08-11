@@ -64,7 +64,7 @@ public class Objects : MonoBehaviour
     
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("triggered" + IsCoroutinenull(layerCheckCoroutine));
+        
 
         
 
@@ -132,7 +132,7 @@ public class Objects : MonoBehaviour
 
     public IEnumerator LayerCheck(GameObject objecthit)
     {
-        Debug.Log("layercheck started");
+        
         GameObject objecthitPivot = FindObjectHitPivot(objecthit);
 
         while(Vector2.Distance(objecthit.transform.position, transform.position)< size)
@@ -146,7 +146,7 @@ public class Objects : MonoBehaviour
                 BringFront();
             }
             yield return null;
-            Debug.Log("layerchecking");
+            
 
 
         }

@@ -1,10 +1,12 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Arrow : MonoBehaviour
 {
     public float Velocity;
+    //public float DistanceFactor;
     SpriteRenderer sprite;
     Rigidbody2D body;
     
@@ -21,8 +23,13 @@ public class Arrow : MonoBehaviour
         DisplayArrow();
         Vector3 TargetPos = Game.Instance.GetCursorPosition();
         
-        Vector3 direction = TargetPos - transform.position;
-        body.linearVelocity = direction.normalized * Velocity;
+        Vector2 direction = (TargetPos - transform.position);
+        Debug.Log("before:"+direction);
+        if (direction.magnitude>1f)
+            direction = direction.normalized;
+        else { direction = Game.Instance.UpScaleNormalize(direction); }
+        Debug.Log("after"+direction);
+        body.linearVelocity = direction * Velocity;
         
     }
 
@@ -39,7 +46,7 @@ public class Arrow : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.name != "Player")
+        if(CollisionCheck(collision.gameObject))
         {
             Debug.Log(collision.gameObject.name + "enabled the blast");
             gameObject.SetActive(false);
@@ -48,4 +55,10 @@ public class Arrow : MonoBehaviour
 
     }
 
+    bool CollisionCheck(GameObject objectHit)
+    {
+        if(objectHit.name == "Player") { return false; }
+        if (objectHit.CompareTag("Vegetation")) { return false; }
+        return true;
+    }
 }

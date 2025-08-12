@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public class Player : MonoBehaviour
 {
     [SerializeField] float MovementSpeed;
+    [SerializeField] float MovementSpeedShift;
     [SerializeField] float intervalBetweenAttack = 0.5f;
     [SerializeField] float intervalBeforeAttack = 0.15f;
 
@@ -93,7 +94,16 @@ public class Player : MonoBehaviour
         }
 
         //rb.MovePosition((Vector2)transform.position + movementInput* MovementSpeed * Time.fixedDeltaTime);
-        rb.linearVelocity = movementInput * MovementSpeed;
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            rb.linearVelocity = movementInput * MovementSpeedShift;
+        }
+        else
+        {
+            rb.linearVelocity = movementInput * MovementSpeed;
+        }
+        
     }
 
     //Layer Methods

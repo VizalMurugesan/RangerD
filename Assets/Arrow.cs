@@ -17,29 +17,31 @@ public class Arrow : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
     }
 
-    public void EnableArrow(Transform spawnPoint)
+    public void EnableArrow(Transform spawnPoint, Quaternion mainhandRotation)
     {
+        Debug.Log("enable done");
         transform.position = spawnPoint.position;
-        DisplayArrow();
+        DisplayArrow(mainhandRotation);
         Vector3 TargetPos = Game.Instance.GetCursorPosition();
         
         Vector2 direction = (TargetPos - transform.position);
-        Debug.Log("before:"+direction);
+        
         if (direction.magnitude>1f)
             direction = direction.normalized;
         else { direction = Game.Instance.UpScaleNormalize(direction); }
-        Debug.Log("after"+direction);
+        
         body.linearVelocity = direction * Velocity;
         
     }
 
-    public void DisplayArrow()
+    public void DisplayArrow(Quaternion mainhandRotation)
     {
         
         gameObject.SetActive(true);
         body = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
-        transform.rotation = Game.Instance.player.MainHand.transform.rotation * Quaternion.Euler(0f,0f, 90f);
+        transform.rotation =  mainhandRotation * Quaternion.Euler(0f,0f, 90f);
+        sprite.sortingLayerName = Game.Instance.player.rendr.sortingLayerName;
         sprite.sortingOrder = Game.Instance.player.MainHand.GetComponent<SpriteRenderer>().sortingOrder;
         
     }

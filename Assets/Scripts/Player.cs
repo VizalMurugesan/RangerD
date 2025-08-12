@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,9 @@ using UnityEngine.UIElements;
 public class Player : MonoBehaviour
 {
     [SerializeField] float MovementSpeed;
+    [SerializeField] float intervalBetweenAttack = 0.5f;
+    [SerializeField] float intervalBeforeAttack = 0.15f;
+
     Vector2 movementInput = Vector2.zero;
     Rigidbody2D rb;
 
@@ -20,8 +24,15 @@ public class Player : MonoBehaviour
     public Game.Layers PlayerLayer = Game.Layers.Layer1;
 
     public enum PlayerState { Idle, Attacking, Moving }
+    public enum PlayerAttackType { Normal, Ability1, Ability2 }
+
+    public Action Ability1;
+    public Action Ability2;
+    public Coroutine StateCoroutine;
+
 
     public PlayerState state = PlayerState.Idle;
+    PlayerAttackType attackType = PlayerAttackType.Normal;
 
     public enum Direction {  Left, Right, Up , Down};
     public Direction PlayerDirection = Direction.Right;
@@ -54,7 +65,7 @@ public class Player : MonoBehaviour
 
 
 
-        if (movementInput != Vector2.zero)
+        if (movementInput != Vector2.zero )
         {
             anim.SetBool("IsRunning", true);
             state = PlayerState.Moving;
@@ -72,23 +83,14 @@ public class Player : MonoBehaviour
         else
         {
             anim.SetBool("IsRunning", false);
-            if (!state.Equals(PlayerState.Idle))
+            if (!state.Equals(PlayerState.Idle) && CanMove())
             {
                 state = PlayerState.Idle;
-
-                StartCoroutine(EnterIdleState());
+                ChangeStateCoroutine(EnterIdleState());
+                
             }
 
-            
-
         }
-
-
-
-
-        
-        
-
 
         //rb.MovePosition((Vector2)transform.position + movementInput* MovementSpeed * Time.fixedDeltaTime);
         rb.linearVelocity = movementInput * MovementSpeed;
@@ -182,11 +184,14 @@ public class Player : MonoBehaviour
     #endregion
 
 
-    //State Coroutines
+    //State Coroutines & methods
     #region
     public IEnumerator EnterIdleState()
     {
+        Debug.Log("entering idle state");
+        state = PlayerState.Idle;
         movementInput = Vector2.zero;
+        
 
         Game.Instance.ChangeCursorToCrossHair();
 
@@ -201,14 +206,11 @@ public class Player : MonoBehaviour
             {
                 yield break;
             }
-
-            else if (state.Equals(PlayerState.Attacking))
-            {
-                yield return new WaitUntil(IsStateIdle);
-            }
             if (Input.GetMouseButtonDown(0) && !IsStateAttacking())
             {
-                StartCoroutine(EnterAttackState());
+                
+                ChangeStateCoroutine(EnterAttackState());
+                
             }
             yield return null;
         }
@@ -219,13 +221,53 @@ public class Player : MonoBehaviour
 
     public IEnumerator EnterAttackState()
     {
+        Debug.Log("entering attack state");
         state = PlayerState.Attacking;
         anim.SetTrigger("attack");
-        MainHand.GetComponent<ArrowSpawner>().SpawnArrow();
-        yield return new WaitForSeconds(0.7f);
-        state = PlayerState.Idle;
+        yield return new WaitForSeconds(intervalBeforeAttack);
+        Attack();
+        yield return new WaitForSeconds(intervalBetweenAttack);
+        Debug.Log("hahah done");
+        ChangeStateCoroutine (EnterIdleState());
         
     }
+
+    public void NormalATK()
+    {
+        Debug.Log("normal attack done");
+        MainHand.GetComponent<ArrowSpawner>().SpawnArrow(Game.Instance.player.MainHand.transform.rotation);
+    }
+
+    public void Attack()
+    {
+        Debug.Log("atl done");
+        if (attackType.Equals(PlayerAttackType.Normal)) { NormalATK(); }
+        else if (attackType.Equals(PlayerAttackType.Ability1)) { Ability1.Invoke(); }
+        else if (attackType.Equals(PlayerAttackType.Ability2)) { Ability2.Invoke(); }
+    }
+
+    bool CanAtk()
+    {
+        return true;
+    }
+
+    bool CanMove()
+    {
+        if (state.Equals(PlayerState.Attacking)) { return false; } ;
+        return true;
+    }
+
+    public void ChangeStateCoroutine(IEnumerator coroutine)
+    {
+        if (StateCoroutine != null)
+        {
+            StopCoroutine(StateCoroutine);
+        }
+
+        StateCoroutine = StartCoroutine(coroutine);
+    }
+
+
     #endregion
 
     //helper methods

@@ -9,17 +9,19 @@ public class Arrow : MonoBehaviour
     //public float DistanceFactor;
     SpriteRenderer sprite;
     Rigidbody2D body;
-    
-    
+    ArrowSpawner.ArrowType ArrowType = ArrowSpawner.ArrowType.normal;
+
+
+
     void Awake()
     {
         body = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
     }
 
-    public void EnableArrow(Transform spawnPoint, Quaternion mainhandRotation)
+    public void EnableArrow(Transform spawnPoint, Quaternion mainhandRotation,  ArrowSpawner.ArrowType arrowType)
     {
-        Debug.Log("enable done");
+        Debug.Log(arrowType);
         transform.position = spawnPoint.position;
         DisplayArrow(mainhandRotation);
         Vector3 TargetPos = Game.Instance.GetCursorPosition();
@@ -31,6 +33,8 @@ public class Arrow : MonoBehaviour
         else { direction = Game.Instance.UpScaleNormalize(direction); }
         
         body.linearVelocity = direction * Velocity;
+
+        ArrowType = arrowType;
         
     }
 
@@ -48,12 +52,16 @@ public class Arrow : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(CollisionCheck(collision.gameObject))
+        if (CollisionCheck(collision.gameObject))
         {
-            Debug.Log(collision.gameObject.name + "enabled the blast");
+            Debug.Log(collision.gameObject.name+" triggered the blast");
+            if (ArrowType.Equals(ArrowSpawner.ArrowType.ability2))
+            {
+                Game.Instance.EffectManager.EnablePoisonEffect((Vector2)transform.position);
+            }
+            
             gameObject.SetActive(false);
         }
-        
 
     }
 

@@ -7,7 +7,8 @@ using UnityEngine.UIElements;
 public class Player : MonoBehaviour
 {
     [SerializeField] float MovementSpeed;
-    [SerializeField] float MovementSpeedShift;
+    [SerializeField] float MovementSpeedInstance;
+    [SerializeField] float MovementSpeedMultiplier;
     [SerializeField] float intervalBetweenAttack = 0.5f;
     [SerializeField] float intervalBeforeAttack = 0.15f;
 
@@ -28,7 +29,7 @@ public class Player : MonoBehaviour
     public enum PlayerAttackType { Normal, Ability1, Ability2 }
 
     public Action Ability1;
-    public Action Ability2;
+    
     public Coroutine StateCoroutine;
 
 
@@ -55,7 +56,36 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        //keys
+        
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (attackType.Equals(PlayerAttackType.Ability2))
+            {
+                attackType = PlayerAttackType.Normal;
+                Debug.Log("changed to" + attackType);
+            }
+            else
+            {
+                attackType = PlayerAttackType.Ability2;
+                Debug.Log("changed to" + attackType);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            if (attackType.Equals(PlayerAttackType.Ability1))
+            {
+                attackType = PlayerAttackType.Normal;
+            }
+            else
+            {
+                attackType = PlayerAttackType.Ability1;
+            }
+        }
 
+    }
     private void FixedUpdate()
     {
         float VelocityX = Input.GetAxis("Horizontal");
@@ -79,6 +109,8 @@ public class Player : MonoBehaviour
      
             else if(!PlayerDirection.Equals(Direction.Left) && movementInput.x < 0) { FaceLeft(); }
 
+            
+
         }
 
         else
@@ -92,18 +124,19 @@ public class Player : MonoBehaviour
             }
 
         }
-
-        //rb.MovePosition((Vector2)transform.position + movementInput* MovementSpeed * Time.fixedDeltaTime);
-
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && MovementSpeedInstance==MovementSpeed)
         {
-            rb.linearVelocity = movementInput * MovementSpeedShift;
+            MovementSpeedInstance *= MovementSpeedMultiplier;
+
         }
         else
         {
-            rb.linearVelocity = movementInput * MovementSpeed;
+            MovementSpeedInstance = MovementSpeed;
         }
-        
+
+        rb.linearVelocity = movementInput * MovementSpeedInstance;
+
+
     }
 
     //Layer Methods
@@ -198,7 +231,7 @@ public class Player : MonoBehaviour
     #region
     public IEnumerator EnterIdleState()
     {
-        Debug.Log("entering idle state");
+        
         state = PlayerState.Idle;
         movementInput = Vector2.zero;
         
@@ -219,7 +252,7 @@ public class Player : MonoBehaviour
             if (Input.GetMouseButtonDown(0) && !IsStateAttacking())
             {
                 
-                ChangeStateCoroutine(EnterAttackState());
+                ChangeStateCoroutine(EnterAttackState(MainHand.transform.rotation));
                 
             }
             yield return null;
@@ -229,31 +262,38 @@ public class Player : MonoBehaviour
 
     }
 
-    public IEnumerator EnterAttackState()
+    public IEnumerator EnterAttackState(Quaternion mainHandRotation)
     {
-        Debug.Log("entering attack state");
+         
+        
         state = PlayerState.Attacking;
         anim.SetTrigger("attack");
         yield return new WaitForSeconds(intervalBeforeAttack);
-        Attack();
+        Attack(MainHand.transform.rotation);
         yield return new WaitForSeconds(intervalBetweenAttack);
-        Debug.Log("hahah done");
+        
         ChangeStateCoroutine (EnterIdleState());
         
     }
 
-    public void NormalATK()
+    public void NormalATK(Quaternion handRotation)
     {
         Debug.Log("normal attack done");
-        MainHand.GetComponent<ArrowSpawner>().SpawnArrow(Game.Instance.player.MainHand.transform.rotation);
+        MainHand.GetComponent<ArrowSpawner>().SpawnArrow(handRotation, ArrowSpawner.ArrowType.normal);
     }
 
-    public void Attack()
+    public void Ability2(Quaternion handRotation)
     {
-        Debug.Log("atl done");
-        if (attackType.Equals(PlayerAttackType.Normal)) { NormalATK(); }
+        Debug.Log("abilioty2 attack done");
+        MainHand.GetComponent<ArrowSpawner>().SpawnArrow(handRotation, ArrowSpawner.ArrowType.ability2);
+    }
+
+    public void Attack(Quaternion handRotation)
+    {
+        
+        if (attackType.Equals(PlayerAttackType.Normal)) { NormalATK(handRotation); }
         else if (attackType.Equals(PlayerAttackType.Ability1)) { Ability1.Invoke(); }
-        else if (attackType.Equals(PlayerAttackType.Ability2)) { Ability2.Invoke(); }
+        else if (attackType.Equals(PlayerAttackType.Ability2)) { Ability2(handRotation); }
     }
 
     bool CanAtk()

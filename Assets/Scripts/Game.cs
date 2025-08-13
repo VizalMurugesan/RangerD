@@ -11,6 +11,8 @@ public class Game : MonoBehaviour
 
     public Vector2 CursorOffset;
 
+    public EffectManagerScript EffectManager;
+
     public enum SortingLayers { BaseGrass, BaseGround, path, VegetationBeforePlayer, StructuresBeforePlayer, VegetationOrstructures, Player, VegetationAfterPlayer, StructuresAfterPlayer, VegetationOrstructuresAfterPlayer, 
                                 Layer2ground,Layer2Structures, Layer2PropsBeforePlayer, playerLayer2, Layer2PropsAfterPlayer}
 

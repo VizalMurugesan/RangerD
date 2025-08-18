@@ -90,5 +90,19 @@ public class Game : MonoBehaviour
 
         return vector;
     }
+
+    public bool IsAllCoordinatesLessThan(Vector3 vector, float threshold)
+    {
+        return Mathf.Abs(vector.x) <= threshold
+            && Mathf.Abs(vector.y) <= threshold
+            && Mathf.Abs(vector.z) <= threshold;
+    }
+    public bool IsAllCoordinatesLessThan(Vector2 vector, float threshold)
+    {
+        return Mathf.Abs(vector.x) <= threshold
+            && Mathf.Abs(vector.y) <= threshold;
+           
+    }
+
     #endregion
 }

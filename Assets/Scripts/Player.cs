@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -36,8 +37,12 @@ public class Player : MonoBehaviour
     public PlayerState state = PlayerState.Idle;
     PlayerAttackType attackType = PlayerAttackType.Normal;
 
-    public enum Direction {  Left, Right, Up , Down};
-    public Direction PlayerDirection = Direction.Right;
+    public enum Direction {  Left, Right};
+    public Direction PlayerDirection;
+
+    public enum Quadrant { first,  second, third , fourth};
+    public Quadrant quadrant;
+
 
     private void Start()
     {
@@ -85,6 +90,19 @@ public class Player : MonoBehaviour
             }
         }
 
+        if (Input.GetMouseButtonDown(0) && !IsStateAttacking())
+        {
+            if (!MainHand.activeInHierarchy)
+            {
+                MainHand.SetActive(true);
+            }
+            TurnMainHandandBody();
+            Debug.Log("rotation : " + MainHand.transform.rotation);
+            Debug.Log("position : " + Game.Instance.GetCursorPosition());
+            ChangeStateCoroutine(EnterAttackState(MainHand.transform.rotation, Game.Instance.GetCursorPosition()));
+
+        }
+
     }
     private void FixedUpdate()
     {
@@ -93,10 +111,18 @@ public class Player : MonoBehaviour
 
         movementInput = new Vector2(VelocityX, VelocityY).normalized;
 
+        if (Input.GetKey(KeyCode.LeftShift) && MovementSpeedInstance == MovementSpeed)
+        {
+            MovementSpeedInstance *= MovementSpeedMultiplier;
+
+        }
+        else
+        {
+            MovementSpeedInstance = MovementSpeed;
+        }
 
 
-
-        if (movementInput != Vector2.zero )
+        if (movementInput != Vector2.zero && CanMove())
         {
             anim.SetBool("IsRunning", true);
             state = PlayerState.Moving;
@@ -109,13 +135,14 @@ public class Player : MonoBehaviour
      
             else if(!PlayerDirection.Equals(Direction.Left) && movementInput.x < 0) { FaceLeft(); }
 
-            
+            rb.linearVelocity = movementInput * MovementSpeedInstance;
 
         }
 
         else
         {
             anim.SetBool("IsRunning", false);
+            rb.linearVelocity = Vector2.zero;
             if (!state.Equals(PlayerState.Idle) && CanMove())
             {
                 state = PlayerState.Idle;
@@ -124,17 +151,9 @@ public class Player : MonoBehaviour
             }
 
         }
-        if (Input.GetKey(KeyCode.LeftShift) && MovementSpeedInstance==MovementSpeed)
-        {
-            MovementSpeedInstance *= MovementSpeedMultiplier;
+        
 
-        }
-        else
-        {
-            MovementSpeedInstance = MovementSpeed;
-        }
-
-        rb.linearVelocity = movementInput * MovementSpeedInstance;
+       
 
 
     }
@@ -195,33 +214,49 @@ public class Player : MonoBehaviour
     {
         MainHand.GetComponent<SpriteRenderer>().sortingOrder = 4;
     }
-
+    public Quadrant GetQuadrant(float angle)
+    {
+        angle = angle % 360f;
+        Debug.Log(angle);
+        if (0f <= angle && angle < 90f) {  quadrant = Quadrant.first; return Quadrant.first; }
+        else if (90f < angle && angle < 175f) {  quadrant = Quadrant.second; return Quadrant.second; }
+        else if (-90f <= angle && angle < 0f) {  quadrant = Quadrant.third; return Quadrant.third; }
+        else if(-181f<= angle && angle< -90f) {  quadrant = Quadrant.fourth; return Quadrant.fourth; }
+        else { return quadrant; }
+    }
     public void TurnMainHandandBody()
     {
         Vector3 MousePos = Game.Instance.GetCursorPosition();
         Vector3 MousePosPlayerPosDiff = MousePos - mainhandpivot.transform.position;
-
-        if (MousePosPlayerPosDiff.magnitude < 0.2f)
+        
+        if (Game.Instance.IsAllCoordinatesLessThan((Vector2)MousePosPlayerPosDiff,0.3f) )
         {
             return;
         }
 
         float angle = Mathf.Atan2(MousePosPlayerPosDiff.y, MousePosPlayerPosDiff.x) * Mathf.Rad2Deg;
-        float finalAngle = 0f;
+        ChangeAccordingToQuadrant(angle);
 
-        if (PlayerDirection.Equals(Direction.Right))
-        {
-            MainHand.transform.parent.rotation = Quaternion.Euler(0f, 0f, angle);
-            finalAngle = angle;
-        }    
 
-        else if (PlayerDirection.Equals(Direction.Left))
+    }
+
+    public void ChangeAccordingToQuadrant(float angle)
+    {
+        Quadrant quadrant = GetQuadrant(angle);
+        if (quadrant.Equals(Quadrant.first) || quadrant.Equals(Quadrant.second))
         {
-            MainHand.transform.parent.rotation = Quaternion.Euler(0f, 0f, angle + 180f);
-            finalAngle = angle +180f;
+            FaceLeft();
+            anim.SetFloat("movementY", 1f);
+            SetMainHandAngle(180f + angle);
         }
-         
-        TurnBodyAccordingToAngle(finalAngle);
+
+        else if (quadrant.Equals(Quadrant.third) || quadrant.Equals(Quadrant.fourth))
+        {
+            FaceRight();
+            anim.SetFloat("movementY", -1f);
+            SetMainHandAngle(angle);
+        }
+
         
     }
     #endregion
@@ -234,6 +269,7 @@ public class Player : MonoBehaviour
         
         state = PlayerState.Idle;
         movementInput = Vector2.zero;
+        
         
 
         Game.Instance.ChangeCursorToCrossHair();
@@ -252,7 +288,7 @@ public class Player : MonoBehaviour
             if (Input.GetMouseButtonDown(0) && !IsStateAttacking())
             {
                 
-                ChangeStateCoroutine(EnterAttackState(MainHand.transform.rotation));
+                ChangeStateCoroutine(EnterAttackState(MainHand.transform.rotation, Game.Instance.GetCursorPosition()));
                 
             }
             yield return null;
@@ -262,38 +298,39 @@ public class Player : MonoBehaviour
 
     }
 
-    public IEnumerator EnterAttackState(Quaternion mainHandRotation)
+    public IEnumerator EnterAttackState(Quaternion mainHandRotation, Vector3 TargetPos)
     {
-         
-        
-        state = PlayerState.Attacking;
         anim.SetTrigger("attack");
+        rb.linearVelocity = Vector2.zero;
+        state = PlayerState.Attacking;
+        
         yield return new WaitForSeconds(intervalBeforeAttack);
-        Attack(MainHand.transform.rotation);
+        Attack(MainHand.transform.rotation, TargetPos);
         yield return new WaitForSeconds(intervalBetweenAttack);
         
         ChangeStateCoroutine (EnterIdleState());
         
     }
 
-    public void NormalATK(Quaternion handRotation)
-    {
-        Debug.Log("normal attack done");
-        MainHand.GetComponent<ArrowSpawner>().SpawnArrow(handRotation, ArrowSpawner.ArrowType.normal);
-    }
-
-    public void Ability2(Quaternion handRotation)
-    {
-        Debug.Log("abilioty2 attack done");
-        MainHand.GetComponent<ArrowSpawner>().SpawnArrow(handRotation, ArrowSpawner.ArrowType.ability2);
-    }
-
-    public void Attack(Quaternion handRotation)
+    public void NormalATK(Quaternion handRotation, Vector3 targetPos)
     {
         
-        if (attackType.Equals(PlayerAttackType.Normal)) { NormalATK(handRotation); }
+        MainHand.GetComponent<ArrowSpawner>().SpawnArrow(handRotation, ArrowSpawner.ArrowType.normal, targetPos);
+    }
+
+    public void Ability2(Quaternion handRotation, Vector3 targetPos)
+    {
+        
+        MainHand.GetComponent<ArrowSpawner>().SpawnArrow(handRotation, ArrowSpawner.ArrowType.ability2, targetPos );
+    }
+
+    public void Attack(Quaternion handRotation, Vector3 TargetPos)
+    {
+        
+
+        if (attackType.Equals(PlayerAttackType.Normal)) { NormalATK(handRotation, TargetPos); }
         else if (attackType.Equals(PlayerAttackType.Ability1)) { Ability1.Invoke(); }
-        else if (attackType.Equals(PlayerAttackType.Ability2)) { Ability2(handRotation); }
+        else if (attackType.Equals(PlayerAttackType.Ability2)) { Ability2(handRotation, TargetPos); }
     }
 
     bool CanAtk()
@@ -322,46 +359,9 @@ public class Player : MonoBehaviour
 
     //helper methods
     #region
-    public void TurnBodyAccordingToAngle(float angle)
-    {
+    
 
-        if (PlayerDirection.Equals(Direction.Left))
-        {
-            if (180f> angle && angle> 0f)
-            {
-                anim.SetFloat("movementY", -1f);
-                BringMainHandToFront();
-                FaceRight();
-            }
-
-            else
-            {
-                anim.SetFloat("movementY", 1f);
-                SendMainHandToBack();
-                FaceLeft();
-            }
-        }
-
-        else
-        {
-            if (angle > 0f)
-            {
-                anim.SetFloat("movementY", 1f);
-                SendMainHandToBack();
-                FaceLeft();
-            }
-
-            else
-            {
-                anim.SetFloat("movementY", -1f);
-                BringMainHandToFront();
-                FaceRight();
-            }
-        }
-        
-
-    }
-
+    
     public bool IsStateIdle()
     {
         return state.Equals(PlayerState.Idle);
@@ -385,6 +385,11 @@ public class Player : MonoBehaviour
         Vector3 CurrScale = transform.localScale;
         transform.localScale = new Vector3(1f, CurrScale.y, CurrScale.z);
         
+    }
+
+    public void SetMainHandAngle(float Angle)
+    {
+        MainHand.transform.parent.rotation = Quaternion.Euler(0f, 0f, Angle);
     }
     #endregion
 }

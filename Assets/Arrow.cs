@@ -19,12 +19,12 @@ public class Arrow : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
     }
 
-    public void EnableArrow(Transform spawnPoint, Quaternion mainhandRotation,  ArrowSpawner.ArrowType arrowType)
+    public void EnableArrow(Transform spawnPoint, Quaternion mainhandRotation,  ArrowSpawner.ArrowType arrowType, Vector3 TargetPos)
     {
-        Debug.Log(arrowType);
+        
         transform.position = spawnPoint.position;
         DisplayArrow(mainhandRotation);
-        Vector3 TargetPos = Game.Instance.GetCursorPosition();
+        
         
         Vector2 direction = (TargetPos - transform.position);
         
@@ -54,7 +54,7 @@ public class Arrow : MonoBehaviour
     {
         if (CollisionCheck(collision.gameObject))
         {
-            Debug.Log(collision.gameObject.name+" triggered the blast");
+            
             if (ArrowType.Equals(ArrowSpawner.ArrowType.ability2))
             {
                 Game.Instance.EffectManager.EnablePoisonEffect((Vector2)transform.position);
@@ -68,6 +68,7 @@ public class Arrow : MonoBehaviour
     bool CollisionCheck(GameObject objectHit)
     {
         if(objectHit.name == "Player") { return false; }
+        if(objectHit.CompareTag("Player")) { return false; }
         if (objectHit.CompareTag("Vegetation")) { return false; }
         return true;
     }

@@ -10,14 +10,14 @@ public class ArrowSpawner : MonoBehaviour
     public Transform SpawnPoint;
     
 
-    public void SpawnArrow(Quaternion mainhandRotation, ArrowType arrowType)
+    public void SpawnArrow(Quaternion mainhandRotation, ArrowType arrowType, Vector3 TargetPos)
     {
         
         foreach (GameObject arrow in Arrows)
         {
             if (!arrow.activeInHierarchy)
             {
-                arrow.GetComponent<Arrow>().EnableArrow(SpawnPoint, mainhandRotation, arrowType);
+                arrow.GetComponent<Arrow>().EnableArrow(SpawnPoint, mainhandRotation, arrowType, TargetPos);
                 break;
             }
         }

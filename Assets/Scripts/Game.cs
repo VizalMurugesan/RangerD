@@ -13,6 +13,8 @@ public class Game : MonoBehaviour
 
     public EffectManagerScript EffectManager;
 
+    public InventoryManager inventoryManager;
+
     public enum SortingLayers { BaseGrass, BaseGround, path, VegetationBeforePlayer, StructuresBeforePlayer, VegetationOrstructures, Player, VegetationAfterPlayer, StructuresAfterPlayer, VegetationOrstructuresAfterPlayer, 
                                 Layer2ground,Layer2Structures, Layer2PropsBeforePlayer, playerLayer2, Layer2PropsAfterPlayer}
 
@@ -38,6 +40,11 @@ public class Game : MonoBehaviour
             player = GameObject.Find("Player").GetComponent<Player>();
         }
 
+        if(inventoryManager == null)
+        {
+            inventoryManager = GameObject.Find("Inventory").GetComponent<InventoryManager>();
+        }
+
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         CursorOffset = new Vector2(AimStateCrossHair.width / 2f, AimStateCrossHair.height / 2f);
@@ -60,6 +67,10 @@ public class Game : MonoBehaviour
     #region
     public void ChangeCursorToCrossHair()
     {
+        if (!player.CanAtk())
+        {
+            return;
+        }
         Cursor.SetCursor(AimStateCrossHair, CursorOffset, CursorMode.Auto);
         
     }

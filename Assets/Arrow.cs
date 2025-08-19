@@ -70,6 +70,7 @@ public class Arrow : MonoBehaviour
         if(objectHit.name == "Player") { return false; }
         if(objectHit.CompareTag("Player")) { return false; }
         if (objectHit.CompareTag("Vegetation")) { return false; }
+        if (objectHit.CompareTag("PlayerPivot")) { return false; }
         return true;
     }
 }

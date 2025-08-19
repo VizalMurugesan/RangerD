@@ -97,8 +97,7 @@ public class Player : MonoBehaviour
                 MainHand.SetActive(true);
             }
             TurnMainHandandBody();
-            Debug.Log("rotation : " + MainHand.transform.rotation);
-            Debug.Log("position : " + Game.Instance.GetCursorPosition());
+            
             ChangeStateCoroutine(EnterAttackState(MainHand.transform.rotation, Game.Instance.GetCursorPosition()));
 
         }
@@ -217,7 +216,7 @@ public class Player : MonoBehaviour
     public Quadrant GetQuadrant(float angle)
     {
         angle = angle % 360f;
-        Debug.Log(angle);
+        
         if (0f <= angle && angle < 90f) {  quadrant = Quadrant.first; return Quadrant.first; }
         else if (90f < angle && angle < 175f) {  quadrant = Quadrant.second; return Quadrant.second; }
         else if (-90f <= angle && angle < 0f) {  quadrant = Quadrant.third; return Quadrant.third; }
@@ -229,7 +228,7 @@ public class Player : MonoBehaviour
         Vector3 MousePos = Game.Instance.GetCursorPosition();
         Vector3 MousePosPlayerPosDiff = MousePos - mainhandpivot.transform.position;
         
-        if (Game.Instance.IsAllCoordinatesLessThan((Vector2)MousePosPlayerPosDiff,0.3f) )
+        if (Game.Instance.IsAllCoordinatesLessThan((Vector2)MousePosPlayerPosDiff,0.5f) )
         {
             return;
         }
@@ -333,8 +332,9 @@ public class Player : MonoBehaviour
         else if (attackType.Equals(PlayerAttackType.Ability2)) { Ability2(handRotation, TargetPos); }
     }
 
-    bool CanAtk()
+    public bool CanAtk()
     {
+        if (Game.Instance.inventoryManager.InventoryActive) { return false; }
         return true;
     }
 

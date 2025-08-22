@@ -1,47 +1,56 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    [Header("float Variables")]
     [SerializeField] float MovementSpeed;
     [SerializeField] float MovementSpeedInstance;
-    [SerializeField] float MovementSpeedMultiplier;
+    [SerializeField] float RunSpeed;
+    [SerializeField] float RunStaminaCost;
     [SerializeField] float intervalBetweenAttack = 0.5f;
     [SerializeField] float intervalBeforeAttack = 0.15f;
 
     Vector2 movementInput = Vector2.zero;
+
+    [Header("Components")]
     Rigidbody2D rb;
-
     Animator anim;
-
     public List<SpriteRenderer> RendrList;
     public SpriteRenderer rendr;
 
     public GameObject MainHand;
     public GameObject mainhandpivot;
+    PlayerHealth playerHealth;
+    UIBar playerStamina;
 
     public Game.Layers PlayerLayer = Game.Layers.Layer1;
 
-    public enum PlayerState { Idle, Attacking, Moving }
-    public enum PlayerAttackType { Normal, Ability1, Ability2 }
-
+    [Header("Player Abilities")]
     public Action Ability1;
+    public enum PlayerState { Idle, Attacking, Moving, Running }
+    public enum PlayerAttackType { Normal, Ability1, Ability2 }
+    public Image AttackIcon;
+    public Image Ability2Icon;
+    public Image AttackIconParent;
+    public Image Ability2IconParent;
+    public Sprite SelectedIconSprite;
+    public Sprite defaultIconSprite;
+    
     
     public Coroutine StateCoroutine;
 
-
+    [Header("Player State And Enums")]
     public PlayerState state = PlayerState.Idle;
     PlayerAttackType attackType = PlayerAttackType.Normal;
-
     public enum Direction {  Left, Right};
     public Direction PlayerDirection;
-
     public enum Quadrant { first,  second, third , fourth};
     public Quadrant quadrant;
+
 
 
     private void Start()
@@ -59,6 +68,13 @@ public class Player : MonoBehaviour
             if (transform.GetChild(i).GetComponent<SpriteRenderer>() != null)
                 RendrList.Add(transform.GetChild(i).GetComponent<SpriteRenderer>());
         }
+
+        AttackIconParent = AttackIcon.transform.parent.GetComponent<Image>();
+        Ability2IconParent = Ability2Icon.transform.parent.GetComponent<Image>();
+
+        playerHealth = GetComponent<PlayerHealth>();
+        playerStamina = GetComponent<UIBar>();
+
     }
 
     private void Update()
@@ -69,16 +85,26 @@ public class Player : MonoBehaviour
         {
             if (attackType.Equals(PlayerAttackType.Ability2))
             {
-                attackType = PlayerAttackType.Normal;
-                Debug.Log("changed to" + attackType);
+                ChangeAbilityToNormal();
+                //Debug.Log("changed to" + attackType);
             }
             else
             {
-                attackType = PlayerAttackType.Ability2;
-                Debug.Log("changed to" + attackType);
+                ChangeAbilityToAbility2();
+                //Debug.Log("changed to" + attackType);
             }
         }
-        if (Input.GetKeyDown(KeyCode.Q))
+
+        if(Input.GetKeyDown(KeyCode.T))
+        {
+            playerHealth.TakeDamage(20f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            playerHealth.AddHealth(20f);
+        }
+        /**if (Input.GetKeyDown(KeyCode.Q))
         {
             if (attackType.Equals(PlayerAttackType.Ability1))
             {
@@ -88,9 +114,13 @@ public class Player : MonoBehaviour
             {
                 attackType = PlayerAttackType.Ability1;
             }
-        }
+        }**/
 
-        if (Input.GetMouseButtonDown(0) && !IsStateAttacking())
+        if( Input.GetKeyDown(KeyCode.G))
+        {
+            Game.Instance.EnableNoticePanel("hahahaha");
+        }
+        if (Input.GetMouseButtonDown(0) && !IsStateAttacking() &&CanAtk())
         {
             if (!MainHand.activeInHierarchy)
             {
@@ -110,15 +140,7 @@ public class Player : MonoBehaviour
 
         movementInput = new Vector2(VelocityX, VelocityY).normalized;
 
-        if (Input.GetKey(KeyCode.LeftShift) && MovementSpeedInstance == MovementSpeed)
-        {
-            MovementSpeedInstance *= MovementSpeedMultiplier;
-
-        }
-        else
-        {
-            MovementSpeedInstance = MovementSpeed;
-        }
+        
 
 
         if (movementInput != Vector2.zero && CanMove())
@@ -128,13 +150,28 @@ public class Player : MonoBehaviour
             anim.SetFloat("movementX", movementInput.x);
             anim.SetFloat("movementY", movementInput.y);
             Game.Instance.ChangeCursorToDefault();
-            
+
+            if (Input.GetKey(KeyCode.LeftShift) && CanMove() &&playerStamina.CurrentValue>1f)
+            {
+                state = PlayerState.Running;
+                MovementSpeedInstance = RunSpeed;
+                playerStamina.ReduceValue(RunStaminaCost);
+
+            }
+            else
+            {
+                state = PlayerState.Moving;
+                MovementSpeedInstance = MovementSpeed;
+            }
+
             //Direction setting while moving
-            if(!PlayerDirection.Equals(Direction.Right) && movementInput.x > 0) { FaceRight(); }
+            if (!PlayerDirection.Equals(Direction.Right) && movementInput.x > 0) { FaceRight(); }
      
             else if(!PlayerDirection.Equals(Direction.Left) && movementInput.x < 0) { FaceLeft(); }
 
             rb.linearVelocity = movementInput * MovementSpeedInstance;
+
+
 
         }
 
@@ -275,7 +312,7 @@ public class Player : MonoBehaviour
 
         while (true)
         {
-            if(state.Equals(PlayerState.Idle))
+            if(state.Equals(PlayerState.Idle) && CanAtk())
             {
                 TurnMainHandandBody();
             }
@@ -390,6 +427,38 @@ public class Player : MonoBehaviour
     public void SetMainHandAngle(float Angle)
     {
         MainHand.transform.parent.rotation = Quaternion.Euler(0f, 0f, Angle);
+    }
+    #endregion
+    //ATK helper methods
+    #region
+    public void ChangeAbilityToAbility1()
+    {
+
+    }
+    public void ChangeAbilityToAbility2()
+    {
+        ResetAllAbilities();
+        attackType = PlayerAttackType.Ability2;
+        Ability2IconParent.rectTransform.localScale = new Vector3(1.2f, 1.2f, 1f);
+        Ability2IconParent.sprite = SelectedIconSprite;
+
+    }
+    public void ChangeAbilityToNormal()
+    {
+        ResetAllAbilities();
+        attackType = PlayerAttackType.Normal;
+        AttackIconParent.rectTransform.localScale = new Vector3(1.2f, 1.2f, 1f);
+        AttackIconParent.sprite = SelectedIconSprite;
+
+    }
+
+    public void ResetAllAbilities()
+    {
+        AttackIconParent.rectTransform.localScale = Vector3.one;
+        Ability2IconParent.rectTransform.localScale = Vector3.one;
+        Ability2IconParent.sprite = defaultIconSprite;
+        AttackIconParent.sprite = defaultIconSprite;
+
     }
     #endregion
 }

@@ -75,23 +75,7 @@ public class Objects : MonoBehaviour
        
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        
-        /**if (layerCheckCoroutine != null)
-        {
-            //Rendr.sprite = defaultSprite;
-            //Debug.Log("layercheck ended");
-            StopCoroutine(layerCheckCoroutine);
-            BringFront();
-
-           
-
-            //Debug.Log(LayerCheck(collision.gameObject));
-        }
-
-        layerCheckCoroutine = null;**/
-    }
+    
 
     public void BringFront()
     {

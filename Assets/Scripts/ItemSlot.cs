@@ -8,7 +8,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
 {
     //Item Details
     [NonSerialized] public string itemName;
-    [NonSerialized] private int quantity;
+    [NonSerialized] public int quantity;
     [NonSerialized] private Sprite itemSprite;
     [NonSerialized] public bool IsFull = false;
     [NonSerialized] public String DescriptionText;
@@ -67,19 +67,25 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
 
     private void OnRightClick()
     {
-        inventoryManager.SlotInterface.SetActive(true);
+        if(IsFull)
+        {
+            inventoryManager.SlotInterface.transform.position = Input.mousePosition;
+            inventoryManager.SlotInterface.SetActive(true);
+        }
+       
     }
 
     private void OnLeftClick()
     {
         if (inventoryManager.SelectedItemSlot != null)
         {
+            
             if (inventoryManager.SelectedItemSlot.Equals(this))
             {
-                
                 inventoryManager.DeselectAllSlots();
                 return;
             }
+            
         }
     
         inventoryManager.DeselectAllSlots();
@@ -100,7 +106,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     {
         itemName = null;
         quantity = 0;
-        itemSprite = null;
+        itemSprite = inventoryManager.DefaultSelectedSlotSprite;
         DescriptionText = "";
         IsFull = false;
 

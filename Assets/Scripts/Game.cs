@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 {
@@ -15,10 +17,15 @@ public class Game : MonoBehaviour
 
     public InventoryManager inventoryManager;
 
+    public GameObject MainmenuPanel;
+
     public enum SortingLayers { BaseGrass, BaseGround, path, VegetationBeforePlayer, StructuresBeforePlayer, VegetationOrstructures, Player, VegetationAfterPlayer, StructuresAfterPlayer, VegetationOrstructuresAfterPlayer, 
                                 Layer2ground,Layer2Structures, Layer2PropsBeforePlayer, playerLayer2, Layer2PropsAfterPlayer}
 
     public enum Layers { Layer1  , Layer2 };
+
+    GameObject NoticePanel;
+    public TMP_Text NoticePanelText;
 
     public void Awake()
     {
@@ -48,6 +55,8 @@ public class Game : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         CursorOffset = new Vector2(AimStateCrossHair.width / 2f, AimStateCrossHair.height / 2f);
+
+        NoticePanel = NoticePanelText.transform.parent.gameObject;
     }
 
     //MainMenu Methods
@@ -55,6 +64,16 @@ public class Game : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void SetMainMenuActiveOrInactive()
+    {
+        if (MainmenuPanel.activeInHierarchy)
+        {
+            MainmenuPanel.SetActive(false);
+            return;
+        }
+        MainmenuPanel.SetActive(true);
     }
 
     public void NewGame()
@@ -115,5 +134,17 @@ public class Game : MonoBehaviour
            
     }
 
+    public void EnableNoticePanel(string Message)
+    {
+        NoticePanel.SetActive(true);
+        NoticePanelText.text = Message;
+        Time.timeScale = 0f;
+    }
+
+    public void DisableNoticePanel()
+    {
+        NoticePanel.SetActive(false);
+        Time.timeScale = 1f;
+    }
     #endregion
 }

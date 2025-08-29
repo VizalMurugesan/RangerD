@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 public class Game : MonoBehaviour
 {
@@ -26,6 +27,12 @@ public class Game : MonoBehaviour
 
     GameObject NoticePanel;
     public TMP_Text NoticePanelText;
+
+    [NonSerialized] public LevelManager levelManager;
+
+    public LevelManager LevelManager;
+
+    public PathFinder pathFinder;
 
     public void Awake()
     {
@@ -57,6 +64,9 @@ public class Game : MonoBehaviour
         CursorOffset = new Vector2(AimStateCrossHair.width / 2f, AimStateCrossHair.height / 2f);
 
         NoticePanel = NoticePanelText.transform.parent.gameObject;
+
+        levelManager = GetComponent<LevelManager>();
+        
     }
 
     //MainMenu Methods

@@ -2,13 +2,14 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Tilemaps;
+using System.Linq.Expressions;
 
 
 
 
 public class TileManager : MonoBehaviour
 {
-   public Grid grid;
+    public Grid grid;
 
     [SerializeField] public int MapWidth;
     [SerializeField] public int MapHeight;
@@ -24,6 +25,7 @@ public class TileManager : MonoBehaviour
     [SerializeField] Tilemap WhiteFlower;
     [SerializeField] Tilemap YellowFlower;
     [SerializeField] Tilemap path;
+    [SerializeField] Tilemap[] Structures;
     
 
     [SerializeField] List<Tile> GrassTiles= new List<Tile>();
@@ -36,11 +38,15 @@ public class TileManager : MonoBehaviour
 
     public Transform BushesParent;
     float[,] HeightMap;
+
+    public Tile DebugSprite;
+    public Tilemap DebugTileMap;
+    public LayerMask[] layerMask;
     void Start()
     {
         //GenerateBaseGrass(MapWidth,MapHeight);
         //GenerateBaseGround(MapWidth,MapHeight);
-        grid = GetComponent<Grid>();
+        
     }
 
     private float[,] GenerateHeightMap(int width, int height)
@@ -188,4 +194,37 @@ public class TileManager : MonoBehaviour
             DestroyImmediate(BushesParent.GetChild(i).gameObject);
         }
     }
+
+    public bool HasTile(Vector3Int pos)
+    {
+        if (BaseGrass.HasTile(pos)) {  return true; }
+        return false;
+    }
+
+    public bool IsWalkable(Vector3Int pos)
+    {
+        if (!HasTile(pos)) { return false; }
+        Vector3Int newPos = pos;
+        Vector3 Worldpos = grid.GetCellCenterWorld(newPos);
+        foreach (LayerMask mask in layerMask)
+        {
+            if (Physics2D.OverlapBox(Worldpos, new Vector2(0.9f, 0.9f), 0f, mask) != null) { return false; }
+        }
+        
+        /**foreach (Tilemap tilemap in Structures)
+        {
+            newPos = pos;
+            if(tilemap.transform.localScale.Equals( new Vector3(2, 2, 1))){
+                newPos = new Vector3Int(
+                    Mathf.FloorToInt(pos.x /2), 
+                    Mathf.FloorToInt(pos.y /2), pos.z);
+            }
+            if (tilemap.HasTile(newPos)) { return false; }
+            
+        }**/
+
+        return true;
+    }
+
+   
 }

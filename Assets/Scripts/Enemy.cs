@@ -1,0 +1,219 @@
+using UnityEngine;
+using System.Collections.Generic;
+using System.Collections;
+using System;
+
+public class Enemy : Character
+{
+    bool IsAggroed;
+    Vector3 SpawnPos;
+    public float detectionRange;
+    public float MaximumRange;
+    public float AttackRange;
+    public float intervalBetweenStates;
+    public enum EnemyStateEnum { Chilling, RunningToSpawn, Chasing, Attacking, None}
+    EnemyStateEnum state = EnemyStateEnum.None;
+
+    Coroutine moveCoroutine = null;
+
+    public List<EnemyState> EnemyStates;
+
+   
+    public void Start()
+    {
+        SpawnPos = transform.position;
+        //STATES
+        #region
+        EnemyStates = new List<EnemyState>();
+        EnemyState chilling = new EnemyState(ChillingReq,Idle,this, "chilling");
+        EnemyState chasing = new EnemyState(ChasePlayerReq,ChasePlayer,this, "chasing");
+        EnemyState Attacking = new EnemyState(AttackReq, Attack,this, "attacking");
+        EnemyState runToSpawn = new EnemyState(RunToSpawnReq, RunToSpawn,this, "runningtospawn");
+        EnemyStates.Add(chilling);
+        EnemyStates.Add(chasing);
+        EnemyStates.Add(runToSpawn);
+        EnemyStates.Add(Attacking);
+        #endregion
+        StartCoroutine(StartDecidingStates());
+    }
+
+    IEnumerator StartDecidingStates()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(intervalBetweenStates);
+            EnemyState DecidedState = DecideState();
+            if (DecidedState != null) { Debug.Log(DecidedState.Name); DecidedState.StateActionInvoke(); }
+            else { Debug.Log("decided state null"); }
+        }
+        
+    }
+
+    EnemyState DecideState()
+    {
+        foreach (EnemyState state in EnemyStates)
+        {
+            if (state.CheckRequirement()) { return state; }
+        }
+
+        return null;
+    }
+    //STATE FUNCTIONS
+    #region
+    public bool ChillingReq()
+    {
+        if (IsAggroed) { return false; }
+        if (!IsInSpawnPos()) {  return false; }
+        if (IsPlayerWithinDetectionRange()) {  return false; }
+        
+        return true;
+    }
+
+    public void Idle()
+    {
+        if (state.Equals(EnemyStateEnum.Chilling)) { return; }
+        state = EnemyStateEnum.Chilling;
+    }
+    
+    public bool RunToSpawnReq()
+    {
+        return IsAggroed && IsPlayerOutOfRange() && !IsInSpawnPos();
+    }
+
+    public IEnumerator RunToSpawn()
+    {
+        IsAggroed = false;
+        if (state.Equals(EnemyStateEnum.RunningToSpawn)) { yield break; }
+        List<Node> path = Game.Instance.pathFinder.FindPath(transform.position, SpawnPos);
+        if(path!= null)
+        {
+            state = EnemyStateEnum.RunningToSpawn;
+            IsAggroed = false;
+            if (moveCoroutine != null) StopCoroutine(moveCoroutine);
+            moveCoroutine = StartCoroutine(Move(path));
+        }
+        else
+        { 
+            Debug.Log("path is null");
+
+        }
+
+        yield return null;
+    }
+
+    public bool ChasePlayerReq()
+    {
+        
+        if (IsPlayerWithinDetectionRange() && !IsAggroed) { return true; }
+        else if ((state.Equals(EnemyStateEnum.Chasing) || state.Equals(EnemyStateEnum.Attacking))
+                && !IsPlayerOutOfRange() && !IsInAttackRange()) { return true; }
+        return false;
+    }
+    public void ChasePlayer()
+    {
+        if ((IsPlayerOutOfRange() || IsInAttackRange()) && moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+            state = EnemyStateEnum.None;
+            Debug.Log("noneset");
+
+        }
+        state = EnemyStateEnum.Chasing;
+        IsAggroed = true;
+        List<Node> path = Game.Instance.pathFinder.FindPath(transform.position, Game.Instance.player.transform.position);
+        if (path != null)
+        {
+            if (moveCoroutine != null)
+            {
+                Debug.Log("coroutine stopped");
+                StopCoroutine(moveCoroutine);    
+                
+            }
+            moveCoroutine = StartCoroutine(Move(path,2));
+        }
+        else { Debug.Log("path is null"); }
+        
+    }
+
+    public bool AttackReq()
+    {
+        return IsAggroed && IsInAttackRange();
+    }
+
+    public void Attack()
+    {
+        state = EnemyStateEnum.Attacking;
+        Debug.Log("attacked player");
+        
+
+    }
+
+    bool IsInAttackRange()
+    {
+        return MathF.Abs(Vector2.Distance(Game.Instance.player.transform.position, transform.position)) <= AttackRange;
+    }
+
+    bool IsPlayerOutOfRange()
+    {
+        return MathF.Abs(Vector2.Distance(Game.Instance.player.transform.position, SpawnPos)) > MaximumRange;
+    }
+
+    bool IsPlayerWithinDetectionRange()
+    {
+        return MathF.Abs(Vector2.Distance(Game.Instance.player.transform.position, SpawnPos)) < detectionRange;
+    }
+
+    bool IsInSpawnPos()
+    {
+        return MathF.Abs(Vector2.Distance(transform.position, SpawnPos)) <= 0.5f;
+    }
+
+    #endregion
+
+}
+
+#region
+public class EnemyState
+{
+    Func<bool> RequirementMet;
+    Action StateAction;
+    MonoBehaviour enemy;
+    public string Name;
+    
+    Func<IEnumerator> StateCoroutine;
+    public EnemyState(Func<bool> RequirementMet, Action StateAction, MonoBehaviour enemy, string name)
+    {
+        this.RequirementMet = RequirementMet;
+        this.StateAction = StateAction;
+        this.enemy = enemy;
+        Name = name;
+    }
+
+    public EnemyState(Func<bool> RequirementMet, Func<IEnumerator> StateCoroutine,MonoBehaviour enemy, string name)
+    {
+        this.RequirementMet = RequirementMet;
+        this.StateCoroutine = StateCoroutine;
+        this.enemy = enemy;
+        Name = name;
+        
+    }
+
+    public bool CheckRequirement()
+    {
+        return RequirementMet.Invoke();
+    }
+
+    public void StateActionInvoke()
+    {
+        if(StateCoroutine!= null)
+        {
+            enemy.StartCoroutine(StateCoroutine());
+        }
+        StateAction?.Invoke();
+    }
+
+    
+
+
+}
+#endregion

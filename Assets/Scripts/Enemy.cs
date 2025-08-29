@@ -11,6 +11,8 @@ public class Enemy : Character
     public float MaximumRange;
     public float AttackRange;
     public float intervalBetweenStates;
+    public float AttackDuration;
+    public float AttackCooldown;
     public enum EnemyStateEnum { Chilling, RunningToSpawn, Chasing, Attacking, None}
     EnemyStateEnum state = EnemyStateEnum.None;
 
@@ -105,7 +107,7 @@ public class Enemy : Character
     {
         
         if (IsPlayerWithinDetectionRange() && !IsAggroed) { return true; }
-        else if ((state.Equals(EnemyStateEnum.Chasing) || state.Equals(EnemyStateEnum.Attacking))
+        else if ((state.Equals(EnemyStateEnum.Chasing) || state.Equals(EnemyStateEnum.None))
                 && !IsPlayerOutOfRange() && !IsInAttackRange()) { return true; }
         return false;
     }
@@ -120,7 +122,7 @@ public class Enemy : Character
         }
         state = EnemyStateEnum.Chasing;
         IsAggroed = true;
-        List<Node> path = Game.Instance.pathFinder.FindPath(transform.position, Game.Instance.player.transform.position);
+        List<Node> path = Game.Instance.pathFinder.FindPath(transform.position, Game.Instance.player.GetPlayerPosition());
         if (path != null)
         {
             if (moveCoroutine != null)
@@ -129,7 +131,7 @@ public class Enemy : Character
                 StopCoroutine(moveCoroutine);    
                 
             }
-            moveCoroutine = StartCoroutine(Move(path,2));
+            moveCoroutine = StartCoroutine(Move(path,0));
         }
         else { Debug.Log("path is null"); }
         
@@ -137,20 +139,47 @@ public class Enemy : Character
 
     public bool AttackReq()
     {
-        return IsAggroed && IsInAttackRange();
+        return IsAggroed && IsInAttackRange()&& !state.Equals(EnemyStateEnum.Attacking);
     }
 
-    public void Attack()
+    public IEnumerator Attack()
     {
         state = EnemyStateEnum.Attacking;
-        Debug.Log("attacked player");
-        
+        Vector2 StartPos = transform.position;
+        Vector2 localScale = transform.localScale;
+        Vector2 NewScale = localScale * 1.5f;
+        float t = 0f;
+        while (t<AttackDuration)
+        {
+            transform.position = Vector2.Lerp(StartPos, Game.Instance.player.GetPlayerPosition(), t/AttackDuration);
+            transform.localScale = Vector2.Lerp(localScale, NewScale, t/AttackDuration);
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        Vector2 NewStartPos = transform.position;
+        t = 0f;
+        while (t < AttackDuration)
+        {
+            transform.position = Vector2.Lerp(NewStartPos, StartPos, t / AttackDuration);
+            transform.localScale = Vector2.Lerp( NewScale, localScale, t / AttackDuration);
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = StartPos;
+        transform.localScale = localScale;
+
+        yield return new WaitForSeconds(AttackCooldown);
+        state = EnemyStateEnum.None;
+
 
     }
+    
 
     bool IsInAttackRange()
     {
-        return MathF.Abs(Vector2.Distance(Game.Instance.player.transform.position, transform.position)) <= AttackRange;
+        return MathF.Abs(Vector2.Distance(Game.Instance.player.GetPlayerPosition(), transform.position)) <= AttackRange;
     }
 
     bool IsPlayerOutOfRange()

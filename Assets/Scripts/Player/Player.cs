@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
 
     public GameObject MainHand;
     public GameObject mainhandpivot;
+    public GameObject PlayerPivot;
     PlayerHealth playerHealth;
     UIBar playerStamina;
 
@@ -402,7 +403,10 @@ public class Player : MonoBehaviour
     //helper methods
     #region
     
-
+    public Vector3 GetPlayerPosition()
+    {
+        return PlayerPivot.transform.position;
+    }
     
     public bool IsStateIdle()
     {

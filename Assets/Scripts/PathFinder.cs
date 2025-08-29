@@ -161,8 +161,8 @@ public class PathFinder : MonoBehaviour
         int dstY = Mathf.Abs(a.Cell.y - b.Cell.y);
 
         if (dstX > dstY)
-            return 14 * dstY + 10 * (dstX - dstY); // diagonal movement
-        return 14 * dstX + 10 * (dstY - dstX);
+            return 1.4f * dstY + 1f * (dstX - dstY); // diagonal movement
+        return 1.4f * dstX + 1f * (dstY - dstX);
     }
 
     float GetCost(Node node)

@@ -13,6 +13,7 @@ public class Enemy : Character
     public float intervalBetweenStates;
     public float AttackDuration;
     public float AttackCooldown;
+    public float EXPtogive;
     public enum EnemyStateEnum { Chilling, RunningToSpawn, Chasing, Attacking, None}
     EnemyStateEnum state = EnemyStateEnum.None;
 
@@ -45,8 +46,8 @@ public class Enemy : Character
         {
             yield return new WaitForSeconds(intervalBetweenStates);
             EnemyState DecidedState = DecideState();
-            if (DecidedState != null) { Debug.Log(DecidedState.Name); DecidedState.StateActionInvoke(); }
-            else { Debug.Log("decided state null"); }
+            if (DecidedState != null) { DecidedState.StateActionInvoke(); }
+            else { }
         }
         
     }
@@ -96,7 +97,7 @@ public class Enemy : Character
         }
         else
         { 
-            Debug.Log("path is null");
+            
 
         }
 
@@ -117,7 +118,7 @@ public class Enemy : Character
         {
             StopCoroutine(moveCoroutine);
             state = EnemyStateEnum.None;
-            Debug.Log("noneset");
+            
 
         }
         state = EnemyStateEnum.Chasing;
@@ -127,13 +128,13 @@ public class Enemy : Character
         {
             if (moveCoroutine != null)
             {
-                Debug.Log("coroutine stopped");
+                
                 StopCoroutine(moveCoroutine);    
                 
             }
             moveCoroutine = StartCoroutine(Move(path,0));
         }
-        else { Debug.Log("path is null"); }
+        else {  }
         
     }
 
@@ -147,7 +148,7 @@ public class Enemy : Character
         state = EnemyStateEnum.Attacking;
         Vector2 StartPos = transform.position;
         Vector2 localScale = transform.localScale;
-        Vector2 NewScale = localScale * 1.5f;
+        Vector2 NewScale = localScale * 1.25f;
         float t = 0f;
         while (t<AttackDuration)
         {

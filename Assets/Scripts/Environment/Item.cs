@@ -5,8 +5,8 @@ using UnityEngine.UI;
 public class Item : MonoBehaviour
 {
     [SerializeField] private string ItemName;
-    [SerializeField] private int Quantity;
-    [SerializeField] private Sprite sprite;
+    [SerializeField] public int Quantity;
+    [SerializeField] public Sprite sprite;
     [SerializeField] public string Description;
 
     [SerializeField] InventoryManager inventoryManager;
@@ -18,7 +18,7 @@ public class Item : MonoBehaviour
             inventoryManager = Game.Instance.inventoryManager;
         }
 
-        Description = "Restores 50 health on use.";
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

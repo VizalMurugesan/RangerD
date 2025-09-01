@@ -28,15 +28,21 @@ public class MessgeToPlayer : MonoBehaviour
         textcolor.a = DefaultAlpha;
         text.color = textcolor;
         transform.position = SpawnPos.transform.position;
-        float t = 0f;
-        while(t< InvSpeed)
+        
+        for (float t = 0; t < InvSpeed; t += Time.deltaTime)
         {
-            textcolor.a = (1 - (t / InvSpeed)) * DefaultAlpha;
+            float progress = t / InvSpeed;
+
+            textcolor.a = (1 - progress) * DefaultAlpha;
             text.color = textcolor;
-            transform.position = Vector3.Lerp((Vector3)SpawnPos.transform.position, (Vector3)EndPos.transform.position, t / InvSpeed);
-            t += Time.deltaTime;
+
+            transform.position = Vector3.Lerp(SpawnPos.position, EndPos.position, progress);
+
             yield return null;
         }
+        textcolor.a = 0f;
+        text.color = textcolor;
+        transform.position = EndPos.position;
         gameObject.SetActive(false);
         yield break;
     }

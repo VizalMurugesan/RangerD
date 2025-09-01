@@ -1,5 +1,7 @@
 using System;
-
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEditor.VersionControl;
 using UnityEngine;
@@ -26,7 +28,10 @@ public class InventoryManager : MonoBehaviour
     public Sprite DefaultSelectedSlotSprite;
     public ItemSlot SelectedItemSlot;
 
-    public MessgeToPlayer[] inventoryMessage;
+    public MessgeToPlayer[] inventoryMessageSlot;
+    public List<string> InventoryMessages = new List<string>();
+    public List<Vector3> InventoryMessageColor = new List<Vector3>();
+    Coroutine invMessage;
 
     // Update is called once per frame
     void Update()
@@ -59,13 +64,13 @@ public class InventoryManager : MonoBehaviour
             if(slot.itemName == name)
             {
                 slot.AddQuantity(quantity);
-                SendInventoryMessage(new Vector3( 0f, 255f, 0f), "+ " + quantity + " " + name);
+                    AddInventoryMessage(new Vector3( 0f, 255f, 0f), "+ " + quantity + " " + name);
                 break;
             }
             else if (!slot.IsFull)
             {
                 slot.AddItem(name, quantity, sprite, Description, Use);
-                SendInventoryMessage(new Vector3(0f, 255f, 0f), "+ " + quantity + " " + name);
+                AddInventoryMessage(new Vector3(0f, 255f, 0f), "+ " + quantity + " " + name);
                 break;
             }
         }
@@ -93,6 +98,7 @@ public class InventoryManager : MonoBehaviour
     //for description panel
     public void SetSelectedSlotDetails(string name, string Description, Sprite sprite)
     {
+        Debug.Log(Description);
         SelectedSlotName.text = name;
         SelectedSlotDescription.text = Description;
         SelectedSlotImage.sprite = sprite;
@@ -115,7 +121,7 @@ public class InventoryManager : MonoBehaviour
 
     public void DiscardSelectedItem()
     {
-        SendInventoryMessage(new Vector3(255f, 0f, 0f), "- " + SelectedItemSlot.quantity + " " + SelectedItemSlot.itemName);
+        AddInventoryMessage(new Vector3(255f, 0f, 0f), "- " + SelectedItemSlot.quantity + " " + SelectedItemSlot.itemName);
         SelectedItemSlot.DiscardItemInSlot();
         SlotInterface.SetActive(false);
         
@@ -123,7 +129,8 @@ public class InventoryManager : MonoBehaviour
 
     public void SendInventoryMessage(Vector3 MessageColor, String Message)
     {
-        foreach(MessgeToPlayer message in inventoryMessage)
+        Debug.Log("sending message");
+        foreach (MessgeToPlayer message in inventoryMessageSlot)
         {
             if (!message.gameObject.activeInHierarchy)
             {
@@ -133,4 +140,32 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
+
+    public void AddInventoryMessage(Vector3 MessageColor, String Message)
+    {
+        Debug.Log("inventory message added");
+        InventoryMessageColor.Add(MessageColor);
+        InventoryMessages.Add(Message);
+        if(invMessage == null)
+        {
+            Debug.Log("inventory message added1");
+            invMessage = StartCoroutine(StartInventoryMessages());
+        }
+    }
+
+    public IEnumerator StartInventoryMessages()
+    {
+        Debug.Log("coroutine started");
+        while (InventoryMessages.Count > 0)
+        {
+            SendInventoryMessage(InventoryMessageColor[0], InventoryMessages[0]);
+            InventoryMessages.RemoveAt(0);
+            InventoryMessageColor.RemoveAt(0);
+            yield return new WaitForSeconds(0.5f);
+        }
+        
+        invMessage = null;
+    }
+
+    
 }

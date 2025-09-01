@@ -5,6 +5,7 @@ using UnityEngine.Rendering;
 
 public class Arrow : MonoBehaviour
 {
+    public float damage = 50f;
     public float Velocity;
     //public float DistanceFactor;
     SpriteRenderer sprite;
@@ -60,6 +61,15 @@ public class Arrow : MonoBehaviour
                 Game.Instance.EffectManager.EnablePoisonEffect((Vector2)transform.position);
             }
             
+            if(collision.gameObject.CompareTag("Character"))
+            {
+                if(collision.gameObject.GetComponent<EnemyHealth>() != null)
+                {
+                    EnemyHealth enemyHealth = collision.gameObject.GetComponent<EnemyHealth>();
+                    enemyHealth.TakeDamage(damage);
+                }
+            }
+
             gameObject.SetActive(false);
         }
 

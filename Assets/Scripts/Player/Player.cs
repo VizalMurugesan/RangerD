@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     public GameObject MainHand;
     public GameObject mainhandpivot;
     public GameObject PlayerPivot;
-    PlayerHealth playerHealth;
+    public PlayerHealth playerHealth;
     UIBar playerStamina;
 
     public Game.Layers PlayerLayer = Game.Layers.Layer1;

@@ -34,6 +34,8 @@ public class Game : MonoBehaviour
 
     public PathFinder pathFinder;
 
+    public Item[] items;
+
     public void Awake()
     {
         if(Instance == null)

@@ -159,4 +159,10 @@ public class Game : MonoBehaviour
         Time.timeScale = 1f;
     }
     #endregion
+
+    public void SpawnItem(Vector3 pos)
+    {
+        int rand = UnityEngine.Random.Range(0, items.Length);
+        Instantiate(items[rand], pos, Quaternion.identity);
+    }
 }

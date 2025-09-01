@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Item : MonoBehaviour
 {
-    [SerializeField] private string ItemName;
+    [SerializeField] public string ItemName;
     [SerializeField] public int Quantity;
     [SerializeField] public Sprite sprite;
     [SerializeField] public string Description;

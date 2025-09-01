@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using UnityEditor.VersionControl;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,18 +38,20 @@ public class InventoryManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Inventory") && !InventoryActive)
         {
-            InventoryMenu.SetActive(true);
             InventoryActive = true;
+            InventoryMenu.SetActive(true);
+            
             //Time.timeScale = 0f;
         }
         else if (Input.GetButtonDown("Inventory") && InventoryActive)
         {
+            InventoryActive = false;
             if (SlotInterface.activeInHierarchy)
             {
                 SlotInterface.SetActive(false);
             }
             InventoryMenu.SetActive(false);
-            InventoryActive = false;
+            
             SetDefaultDescription();
             //Time.timeScale = 1f;
         }
@@ -115,16 +117,22 @@ public class InventoryManager : MonoBehaviour
     public void UseSelectedItem()
     {
         SelectedItemSlot.Use.Invoke();
+        SelectedItemSlot.ReduceQuantity(1);
         SlotInterface.SetActive(false);
 
     }
 
-    public void DiscardSelectedItem()
+    public void DiscardSelectedItem(bool DisplayMessage)
     {
-        AddInventoryMessage(new Vector3(255f, 0f, 0f), "- " + SelectedItemSlot.quantity + " " + SelectedItemSlot.itemName);
+        if (DisplayMessage) { AddInventoryMessage(new Vector3(255f, 0f, 0f), "- " + SelectedItemSlot.quantity + " " + SelectedItemSlot.itemName); }
         SelectedItemSlot.DiscardItemInSlot();
         SlotInterface.SetActive(false);
         
+    }
+
+    public void DiscardSelectedItemWithMessage()
+    {
+        DiscardSelectedItem(true);
     }
 
     public void SendInventoryMessage(Vector3 MessageColor, String Message)

@@ -6,6 +6,7 @@ public class EnemyHealth : MonoBehaviour
 {
     public float MaxHealth = 1f;
     public float currentHealth;
+    public float droprate;
 
     public Image healthBar;
     void UpdateUI()
@@ -40,6 +41,10 @@ public class EnemyHealth : MonoBehaviour
     void Die()
     {
         Game.Instance.levelManager.AddEXP(GetComponent<Enemy>().EXPtogive);
+        if (Random.Range(0f, 1f) >= droprate)
+        {
+            Game.Instance.SpawnItem(transform.position);
+        }
         gameObject.SetActive(false);
     }
 }

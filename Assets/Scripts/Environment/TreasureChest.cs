@@ -30,7 +30,7 @@ public class TreasureChest : MonoBehaviour
         {
             int rand = Random.Range(0, Game.Instance.items.Length);
             Item itemToSpawn = Game.Instance.items[rand];
-            inventory.AddItem(itemToSpawn.name, itemToSpawn.Quantity, itemToSpawn.sprite, itemToSpawn.Description, itemToSpawn.OnUse);
+            inventory.AddItem(itemToSpawn.ItemName, itemToSpawn.Quantity, itemToSpawn.sprite, itemToSpawn.Description, itemToSpawn.OnUse);
         }
     }
 }

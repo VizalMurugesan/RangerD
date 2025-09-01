@@ -124,8 +124,10 @@ public class Player : MonoBehaviour
         {
             Game.Instance.levelManager.AddEXP(100f);
         }
-        if (Input.GetMouseButtonDown(0) && !IsStateAttacking() &&CanAtk())
+        if (Input.GetMouseButtonDown(0) && !IsStateAttacking() && CanAtk())
         {
+            
+
             if (!MainHand.activeInHierarchy)
             {
                 MainHand.SetActive(true);
@@ -327,7 +329,7 @@ public class Player : MonoBehaviour
             {
                 yield break;
             }
-            if (Input.GetMouseButtonDown(0) && !IsStateAttacking())
+            if (Input.GetMouseButtonDown(0) && !IsStateAttacking() && CanAtk())
             {
                 
                 ChangeStateCoroutine(EnterAttackState(MainHand.transform.rotation, Game.Instance.GetCursorPosition()));
@@ -377,6 +379,7 @@ public class Player : MonoBehaviour
 
     public bool CanAtk()
     {
+        
         if (Game.Instance.inventoryManager.InventoryActive) { return false; }
         return true;
     }

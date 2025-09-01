@@ -53,6 +53,13 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         quantityText.text = quantity.ToString();
     }
 
+    public void ReduceQuantity(int quantity)
+    {
+        this.quantity = Mathf.Clamp(this.quantity - quantity, 0, this.quantity);
+        if (this.quantity == 0) { inventoryManager.DiscardSelectedItem(false); }
+        else { quantityText.text = quantity.ToString(); }
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
         if(eventData.button == PointerEventData.InputButton.Left)
@@ -67,7 +74,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
 
     private void OnRightClick()
     {
-        if(IsFull)
+        if(IsFull && IsSlotSelected)
         {
             inventoryManager.SlotInterface.transform.position = Input.mousePosition;
             inventoryManager.SlotInterface.SetActive(true);

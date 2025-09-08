@@ -28,7 +28,7 @@ public class Game : MonoBehaviour
     GameObject NoticePanel;
     public TMP_Text NoticePanelText;
 
-    [NonSerialized] public LevelManager levelManager;
+    public LevelManager levelManager;
 
     public LevelManager LevelManager;
 
@@ -165,4 +165,8 @@ public class Game : MonoBehaviour
         int rand = UnityEngine.Random.Range(0, items.Length);
         Instantiate(items[rand], pos, Quaternion.identity);
     }
+
+    
+    
+
 }

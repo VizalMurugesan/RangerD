@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Node : MonoBehaviour
+public class Node
 {
     public int x;
     public int y;
@@ -9,13 +10,17 @@ public class Node : MonoBehaviour
     public float gcost; //from start
     public float fcost => hcost + gcost;
 
-    public bool IsWalkable;
+    public bool IsWalkable = true;
 
     public Node Parent;
 
     public Vector3 WorldPos;
 
     public Vector3Int Cell;
+
+    public bool isReserved = false;
+
+    public Dictionary<bool, GameObject> Reserved = new Dictionary<bool, GameObject>();
     
 
     public Node(int x, int y, Vector3 WorldPos, Vector3Int Cell, bool Iswalkable, Node parent )
@@ -40,5 +45,6 @@ public class Node : MonoBehaviour
     {
         return Cell == other.Cell;
     }
+
 
 }

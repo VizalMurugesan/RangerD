@@ -421,6 +421,11 @@ public class Player : MonoBehaviour
         return state.Equals(PlayerState.Attacking);
     }
 
+    public bool IsPlayerOnMove()
+    {
+        return state.Equals(PlayerState.Running) || state.Equals(PlayerState.Moving);
+    }
+
     public void FaceLeft()
     {
         PlayerDirection = Direction.Left;

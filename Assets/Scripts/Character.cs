@@ -1,46 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Character : MonoBehaviour
 {
     public float invMovementSpeed;
-    //public List<Node> CurrentPath;
-    public IEnumerator Move(List<Node> nodes)
-    {
-        foreach (Node node in nodes)
-        {
-            yield return MoveToPos(node.WorldPos);
-        }
-    }
+    public List<Node> CurrentPath;
 
-    public IEnumerator Move(List<Node> nodes, int NodesToIgnore)
+    public IEnumerator Move(int NodesToIgnore)
     {
-        for(int i = 0; i < nodes.Count; i++)
+        foreach(var node in CurrentPath)
         {
-            if(Mathf.Abs(nodes.Count - i) <= NodesToIgnore)
+            if (!gameObject.activeInHierarchy) { StopAllCoroutines(); }
+            yield return MoveToPos(node.WorldPos);
+            if (!node.Equals(CurrentPath[CurrentPath.Count - 1]))
             {
-                yield break;
-            }
-            else
-            {
-                yield return MoveToPos(nodes[i].WorldPos);
+                node.isReserved = false;
+
             }
         }
+        
     }
 
     IEnumerator MoveToPos(Vector3 targetPos)
     {
         float t = 0f;
         Vector3 initialPos = transform.position;
-        while (t < invMovementSpeed)
+        float speed = invMovementSpeed*Vector2.Distance(initialPos, targetPos);
+        while (t < speed)
         {
-            transform.position = Vector2.Lerp(initialPos, targetPos, t / invMovementSpeed);
+            transform.position = Vector2.Lerp(initialPos, targetPos, t / speed);
             t += Time.deltaTime;
             yield return null;
         }
         transform.position = targetPos;
         yield break;
+    }
+
+    public void SetCurrentpathReservedToFalse()
+    {
+        foreach (Node node in CurrentPath)
+        {
+            node.isReserved = false;
+            Game.Instance.pathFinder.tileManager.DebugTileMap.SetTile(node.Cell, null);
+        }
     }
 }

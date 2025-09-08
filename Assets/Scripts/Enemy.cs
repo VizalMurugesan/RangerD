@@ -2,10 +2,11 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using System;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class Enemy : Character
 {
-    bool IsAggroed;
+    private bool IsAggroed;
     Vector3 SpawnPos;
     public float detectionRange;
     public float MaximumRange;
@@ -14,6 +15,7 @@ public class Enemy : Character
     public float AttackDuration;
     public float AttackCooldown;
     public float EXPtogive;
+    public int ignoreVal;
     public enum EnemyStateEnum { Chilling, RunningToSpawn, Chasing, Attacking, None}
     EnemyStateEnum state = EnemyStateEnum.None;
 
@@ -21,10 +23,13 @@ public class Enemy : Character
 
     public List<EnemyState> EnemyStates;
 
+    
+    public int CurrentPathOffset = 2;
    
     public void Start()
     {
         SpawnPos = transform.position;
+        CurrentPath = new List<Node>();
         //STATES
         #region
         EnemyStates = new List<EnemyState>();
@@ -37,22 +42,12 @@ public class Enemy : Character
         EnemyStates.Add(runToSpawn);
         EnemyStates.Add(Attacking);
         #endregion
-        StartCoroutine(StartDecidingStates());
-    }
-
-    IEnumerator StartDecidingStates()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(intervalBetweenStates);
-            EnemyState DecidedState = DecideState();
-            if (DecidedState != null) { DecidedState.StateActionInvoke(); }
-            else { }
-        }
         
     }
 
-    EnemyState DecideState()
+    
+
+    public EnemyState DecideState()
     {
         foreach (EnemyState state in EnemyStates)
         {
@@ -86,14 +81,19 @@ public class Enemy : Character
     public IEnumerator RunToSpawn()
     {
         IsAggroed = false;
+        
         if (state.Equals(EnemyStateEnum.RunningToSpawn)) { yield break; }
-        List<Node> path = Game.Instance.pathFinder.FindPath(transform.position, SpawnPos);
+        SetCurrentpathReservedToFalse();
+        List<Node> path = Game.Instance.pathFinder.FindPath(transform.position, SpawnPos, this);
         if(path!= null)
         {
             state = EnemyStateEnum.RunningToSpawn;
             IsAggroed = false;
             if (moveCoroutine != null) StopCoroutine(moveCoroutine);
-            moveCoroutine = StartCoroutine(Move(path));
+            moveCoroutine = StartCoroutine(Move(0));
+            SetCurrentpathReservedToFalse();
+            CurrentPath = path;
+            
         }
         else
         { 
@@ -123,16 +123,23 @@ public class Enemy : Character
         }
         state = EnemyStateEnum.Chasing;
         IsAggroed = true;
-        List<Node> path = Game.Instance.pathFinder.FindPath(transform.position, Game.Instance.player.GetPlayerPosition());
+        SetCurrentpathReservedToFalse();
+        List<Node> path = Game.Instance.pathFinder.FindPath(transform.position, Game.Instance.player.GetPlayerPosition(), this);
         if (path != null)
         {
+            
             if (moveCoroutine != null)
             {
                 
                 StopCoroutine(moveCoroutine);    
                 
             }
-            moveCoroutine = StartCoroutine(Move(path,0));
+            if (!gameObject.activeInHierarchy) { StopAllCoroutines(); }
+            CurrentPath = path;
+            moveCoroutine = StartCoroutine(Move(1));
+            
+            
+            
         }
         else {  }
         
@@ -200,6 +207,25 @@ public class Enemy : Character
 
     #endregion
 
+    void AddPathToCurrentPath(List<Node> path)
+    {
+        for(int i = ignoreVal; i<CurrentPath.Count; i++)
+        {
+            CurrentPath.RemoveAt(i);
+        }
+        CurrentPath.AddRange(path);
+    }
+    public void SetAggroTrue()
+    {
+        IsAggroed = true;
+    }
+
+    public void SetAggroFalse()
+    {
+        IsAggroed = false;
+    }
+
+    
 }
 
 #region

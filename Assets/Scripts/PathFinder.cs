@@ -2,8 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
-using Unity.XR.Oculus.Input;
+
 using UnityEngine;
 
 
@@ -12,7 +11,7 @@ public class PathFinder : MonoBehaviour
     public TileManager tileManager;
     public Grid2D grid;
 
-    private void Start()
+    private void Awake()
     {
         tileManager = GetComponent<TileManager>();
         grid = new Grid2D(tileManager.MapWidth, tileManager.MapHeight);
@@ -35,6 +34,17 @@ public class PathFinder : MonoBehaviour
                 //Debug.Log(i+", "+ j+", "+ Wordpos+", "+ Cell+", "+ walkable);
                 grid.nodes[i, j] = new Node(i, j, Wordpos, Cell, walkable, null);
             }
+        }
+        //debugNode();
+    }
+
+    void debugNode()
+    {
+        int count = 0;
+        foreach (var node in grid.nodes)
+        {
+            //count++;
+            if (node == null) Debug.Log("null node"+count);
         }
     }
 
@@ -64,9 +74,10 @@ public class PathFinder : MonoBehaviour
         StartCoroutine(Debugwalkable());
     }
 
-    public List<Node> FindPath(Vector3 StartPos, Vector3 TargetPos)
+    public List<Node> FindPath(Vector3 StartPos, Vector3 TargetPos, Character charac)
     {
-        //Debug.Log("pathfinding");
+
+        
         List<Node> path = new List<Node>();
 
         Node startNode = GetNodeFromWorldPos(StartPos);
@@ -91,17 +102,26 @@ public class PathFinder : MonoBehaviour
         {
             
             Node curr = openSet.Dequeue();
-            if (curr.Cell.Equals(targetNode.Cell)) { return ReconstructPath(cameFrom, curr.Cell); }
+            if (curr.Cell.Equals(targetNode.Cell))
+            { 
+                path = ReconstructPath(cameFrom, curr.Cell);
+                
+                return path;
+            }
             
             
             foreach (Node neighbour in grid.GetNeighbours(curr))
             {
                 
-                float newGcost = pathCost[curr.Cell] + 1f;
+                if (!grid.GetNode(neighbour.x, neighbour.y).IsWalkable) { continue; }
+                
+                
+                float newGcost = pathCost[curr.Cell] + GetCost(neighbour,curr,charac);
                 
                 
                 
-                if (!pathCost.ContainsKey(neighbour.Cell) )
+                if (!pathCost.ContainsKey(neighbour.Cell))
+                    
                 {
                     
                     pathCost.Add(neighbour.Cell, newGcost);
@@ -111,9 +131,9 @@ public class PathFinder : MonoBehaviour
                 }
                 else if( newGcost < pathCost[neighbour.Cell])
                 {
-                    
-                    pathCost.Add(neighbour.Cell, newGcost);
-                    cameFrom.Add(neighbour.Cell, curr.Cell);
+
+                    pathCost[neighbour.Cell] = newGcost;
+                    cameFrom[neighbour.Cell] = curr.Cell;
                     estimatedtotalCost[neighbour.Cell] = newGcost + GetDistance(neighbour, targetNode);
                     openSet.Enqueue(neighbour, estimatedtotalCost[neighbour.Cell]);
                 }
@@ -144,14 +164,21 @@ public class PathFinder : MonoBehaviour
     private List<Node> ReconstructPath(Dictionary<Vector3Int, Vector3Int> cameFrom, Vector3Int current)
     {
         List<Node> path = new List<Node>();
+
         path.Add(grid.GetNode(current.x, current.y));
+        
         while (cameFrom.ContainsKey(current))
         {
             current = cameFrom[current];
+            grid.GetNode(current.x, current.y).isReserved = true;
+            //tileManager.DebugTileMap.SetTile(current, tileManager.DebugSprite);
             path.Add(grid.GetNode(current.x, current.y));
         }
         path.Reverse();
+        path[0].isReserved = false;
+        
         path.RemoveAt(0);
+        
         return path;
     }
 
@@ -165,11 +192,25 @@ public class PathFinder : MonoBehaviour
         return 1.4f * dstX + 1f * (dstY - dstX);
     }
 
-    float GetCost(Node node)
+    float GetCost(Node node, Node current, Character character)
     {
-        
-        return 1f;
+        float Cost = 1f;
+        if(node.isReserved) {  Cost+= 5f; }
+        //if (IsNeighbourDiagonal(current, node)) { Cost*= 1.5f; }
+        //if(character.CurrentPath.Contains(node)){ Cost /= 1.5f; }
+        return Cost;
     }
+
+    bool IsNeighbourDiagonal(Node a, Node b)
+    {
+        Vector2Int diff = ((Vector2Int)a.Cell - (Vector2Int)b.Cell);
+        return diff.x!=0 && diff.y!=0;
+    }
+
+    
+   
+
+
 }
 
 public class PriorityQueue<TElement, TPriority> where TPriority : IComparable<TPriority>

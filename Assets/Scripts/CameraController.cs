@@ -19,6 +19,8 @@ public class CameraController : MonoBehaviour
         {
             moveCoroutine = StartCoroutine(StartMovingTowardsPlayer());
         }
+        //playerPos = Game.Instance.player.transform.position;
+        //transform.position = new Vector3(playerPos.x, playerPos.y, transform.position.z);
     }
 
     IEnumerator StartMovingTowardsPlayer()

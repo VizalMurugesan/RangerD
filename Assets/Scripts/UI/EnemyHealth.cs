@@ -44,7 +44,7 @@ public class EnemyHealth : MonoBehaviour
         gameObject.GetComponent<Character>().SetCurrentpathReservedToFalse();
         gameObject.GetComponent<Enemy>().StopAllCoroutines();
         Game.Instance.levelManager.AddEXP(GetComponent<Enemy>().EXPtogive);
-        if (Random.Range(0f, 1f) >= droprate)
+        if (Random.Range(0f, 1f) <= droprate)
         {
             Game.Instance.SpawnItem(transform.position);
         }

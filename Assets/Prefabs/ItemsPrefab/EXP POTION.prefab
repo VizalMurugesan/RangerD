@@ -97,6 +97,7 @@ MonoBehaviour:
   Quantity: 1
   sprite: {fileID: 21300000, guid: ace8a02646afeda4880fc3cb14cad705, type: 3}
   Description: Player Gains 100 Exp
+  Value: 100
   inventoryManager: {fileID: 0}
   Amount: 100
 --- !u!1 &3856245381490799983

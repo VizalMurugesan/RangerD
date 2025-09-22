@@ -9,6 +9,7 @@ TagManager:
   - Projectiles
   - PlayerPivot
   - Items
+  - TreasureChestStuff
   layers:
   - Default
   - TransparentFX

@@ -11,6 +11,7 @@ public class Arrow : MonoBehaviour
     SpriteRenderer sprite;
     Rigidbody2D body;
     ArrowSpawner.ArrowType ArrowType = ArrowSpawner.ArrowType.normal;
+    TrailRenderer trail;
 
 
 
@@ -18,6 +19,7 @@ public class Arrow : MonoBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
+        trail = GetComponent<TrailRenderer>();
     }
 
     public void EnableArrow(Transform spawnPoint, Quaternion mainhandRotation,  ArrowSpawner.ArrowType arrowType, Vector3 TargetPos)
@@ -69,7 +71,7 @@ public class Arrow : MonoBehaviour
                     enemyHealth.TakeDamage(damage);
                 }
             }
-
+            trail.Clear();
             gameObject.SetActive(false);
         }
 

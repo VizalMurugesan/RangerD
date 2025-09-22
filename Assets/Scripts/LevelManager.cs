@@ -33,12 +33,12 @@ public class LevelManager : MonoBehaviour
 
         UpdateUI();
 
-        Game.Instance.EnableNoticePanel("LEVEL UP!");
+        //Game.Instance.EnableNoticePanel("LEVEL UP!");
     }
 
     void UpdateUI()
     {
         BarImage.fillAmount = CurrentExp / EXPToNextLevel;
-        value.text = CurrentLevel.ToString();
+        value.text = "LVL "+CurrentLevel.ToString();
     }
 }

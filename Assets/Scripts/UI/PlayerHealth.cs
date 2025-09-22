@@ -26,6 +26,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(float value)
     {
+        //Debug.Log("damage taken");
         currentHealth = Mathf.Clamp(currentHealth-value, 0f, MaxHealth);
         UpdateUI();
         if(SelfHeal != null)

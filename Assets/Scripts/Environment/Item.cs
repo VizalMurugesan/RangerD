@@ -8,6 +8,7 @@ public class Item : MonoBehaviour
     [SerializeField] public int Quantity;
     [SerializeField] public Sprite sprite;
     [SerializeField] public string Description;
+    [SerializeField] public int Value;
 
     [SerializeField] InventoryManager inventoryManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created

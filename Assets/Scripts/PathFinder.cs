@@ -114,6 +114,7 @@ public class PathFinder : MonoBehaviour
             {
                 
                 if (!grid.GetNode(neighbour.x, neighbour.y).IsWalkable) { continue; }
+                //if (IsCharacterOnNode(neighbour.x, neighbour.y)) { continue; }
                 
                 
                 float newGcost = pathCost[curr.Cell] + GetCost(neighbour,curr,charac);
@@ -207,7 +208,12 @@ public class PathFinder : MonoBehaviour
         return diff.x!=0 && diff.y!=0;
     }
 
-    
+    bool IsCharacterOnNode(int x, int y)
+    {
+        LayerMask mask = LayerMask.GetMask("Character");
+        
+        return Physics2D.OverlapBox(grid.GetNode(x,y).WorldPos, new Vector2(0.9f, 0.9f), 0f, mask);
+    }
    
 
 

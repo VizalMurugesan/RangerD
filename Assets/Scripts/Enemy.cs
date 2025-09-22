@@ -17,7 +17,7 @@ public class Enemy : Character
     public float EXPtogive;
     public int ignoreVal;
     public enum EnemyStateEnum { Chilling, RunningToSpawn, Chasing, Attacking, None}
-    EnemyStateEnum state = EnemyStateEnum.None;
+    public EnemyStateEnum state = EnemyStateEnum.None;
 
     Coroutine moveCoroutine = null;
 
@@ -25,9 +25,13 @@ public class Enemy : Character
 
     
     public int CurrentPathOffset = 2;
+
+    BoxCollider2D Box;
+    Rigidbody2D body;
    
-    public void Start()
+    public virtual void Start()
     {
+        base.Start();
         SpawnPos = transform.position;
         CurrentPath = new List<Node>();
         //STATES
@@ -43,6 +47,8 @@ public class Enemy : Character
         EnemyStates.Add(Attacking);
         #endregion
         
+        Box = GetComponent<BoxCollider2D>();
+        body = GetComponent<Rigidbody2D>();
     }
 
     
@@ -90,9 +96,10 @@ public class Enemy : Character
             state = EnemyStateEnum.RunningToSpawn;
             IsAggroed = false;
             if (moveCoroutine != null) StopCoroutine(moveCoroutine);
+            CurrentPath = path;
             moveCoroutine = StartCoroutine(Move(0));
             SetCurrentpathReservedToFalse();
-            CurrentPath = path;
+            
             
         }
         else
@@ -136,7 +143,7 @@ public class Enemy : Character
             }
             if (!gameObject.activeInHierarchy) { StopAllCoroutines(); }
             CurrentPath = path;
-            moveCoroutine = StartCoroutine(Move(1));
+            moveCoroutine = StartCoroutine(Move(2));
             
             
             
@@ -150,22 +157,27 @@ public class Enemy : Character
         return IsAggroed && IsInAttackRange()&& !state.Equals(EnemyStateEnum.Attacking);
     }
 
-    public IEnumerator Attack()
+    public virtual IEnumerator Attack()
     {
         state = EnemyStateEnum.Attacking;
         Vector2 StartPos = transform.position;
+        Vector2 EndPos = Game.Instance.player.GetPlayerPosition();
         Vector2 localScale = transform.localScale;
         Vector2 NewScale = localScale * 1.25f;
         float t = 0f;
+        //Box.enabled = false;
         while (t<AttackDuration)
         {
-            transform.position = Vector2.Lerp(StartPos, Game.Instance.player.GetPlayerPosition(), t/AttackDuration);
+            transform.position = Vector2.Lerp(StartPos, EndPos, t/AttackDuration);
             transform.localScale = Vector2.Lerp(localScale, NewScale, t/AttackDuration);
             t += Time.deltaTime;
             yield return null;
         }
-
-        Vector2 NewStartPos = transform.position;
+        if(Vector2.Distance(transform.position, Game.Instance.player.GetPlayerPosition()) < 0.5f)
+        {
+            Game.Instance.player.playerHealth.TakeDamage(20f);
+        }
+        Vector2 NewStartPos = EndPos;
         t = 0f;
         while (t < AttackDuration)
         {
@@ -177,13 +189,30 @@ public class Enemy : Character
 
         transform.position = StartPos;
         transform.localScale = localScale;
-
-        yield return new WaitForSeconds(AttackCooldown);
+        //Debug.Log(transform.position + "strt:" + StartPos);
+        //body.constraints = RigidbodyConstraints2D.FreezePosition;
+        //Debug.Log(transform.position);
+        //Box.enabled = true;
+        yield return StartCoroutine(Immobilize(StartPos, AttackCooldown));
+        //yield return new WaitForSeconds(AttackCooldown);
+        
+        
+        
+        //Debug.Log(transform.position+" "+state);
         state = EnemyStateEnum.None;
-
+        //body.constraints = RigidbodyConstraints2D.None;
 
     }
-    
+    IEnumerator Immobilize(Vector2 pos, float time)
+    {
+        float t = 0;
+        while (t < time)
+        {
+            transform.position = pos;
+            t += Time.deltaTime;
+            yield return null;
+        }
+    }
 
     bool IsInAttackRange()
     {

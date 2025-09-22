@@ -87,13 +87,14 @@ public class EnemySpawn : MonoBehaviour
             {
                 if (!enemies[i].gameObject.activeInHierarchy) { enemies.RemoveAt(i); continue; }
                 EnemyState DecidedState = enemies[i].DecideState();
-                if (DecidedState != null) { DecidedState.StateActionInvoke(); }
+                if (DecidedState != null) { Debug.Log(DecidedState.Name); DecidedState.StateActionInvoke(); }
                 
             }
             if(enemies.Count == 0) { GroupAggro = false;  break; }
             
         }
 
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
+        this.enabled = false;
     }
 }

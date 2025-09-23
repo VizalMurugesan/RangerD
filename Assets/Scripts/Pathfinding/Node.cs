@@ -12,7 +12,7 @@ public class Node
 
     public bool IsWalkable = true;
 
-    public Node Parent;
+    //public Node Parent;
 
     public Vector3 WorldPos;
 
@@ -20,7 +20,7 @@ public class Node
 
     public bool isReserved = false;
 
-    public Dictionary<bool, GameObject> Reserved = new Dictionary<bool, GameObject>();
+    //public Dictionary<bool, GameObject> Reserved = new Dictionary<bool, GameObject>();
     
 
     public Node(int x, int y, Vector3 WorldPos, Vector3Int Cell, bool Iswalkable, Node parent )
@@ -30,7 +30,7 @@ public class Node
         this.WorldPos = WorldPos;
         this.Cell = Cell;
         IsWalkable = Iswalkable;
-        Parent = parent;
+        //Parent = parent;
         
     }
 

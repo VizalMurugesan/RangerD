@@ -8,9 +8,6 @@ TextureImporter:
   - first:
       213: -199055418093108451
     second: Naga Anim-04_1
-  - first:
-      213: -3628473538631921463
-    second: Naga Anim-04_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -109,10 +106,10 @@ TextureImporter:
       name: Naga Anim-04_0
       rect:
         serializedVersion: 2
-        x: 198
-        y: 250
-        width: 522
-        height: 370
+        x: 210
+        y: 300
+        width: 471
+        height: 320
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,10 +128,10 @@ TextureImporter:
       name: Naga Anim-04_1
       rect:
         serializedVersion: 2
-        x: 709
-        y: 386
-        width: 19
-        height: 14
+        x: 315
+        y: 289
+        width: 295
+        height: 221
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -145,28 +142,6 @@ TextureImporter:
       bones: []
       spriteID: d1381f1e620dc3df0800000000000000
       internalID: -199055418093108451
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Naga Anim-04_2
-      rect:
-        serializedVersion: 2
-        x: 693
-        y: 357
-        width: 17
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9c090f48a8215adc0800000000000000
-      internalID: -3628473538631921463
       vertices: []
       indices: 
       edges: []
@@ -187,7 +162,6 @@ TextureImporter:
     nameFileIdTable:
       Naga Anim-04_0: -6312262476626415688
       Naga Anim-04_1: -199055418093108451
-      Naga Anim-04_2: -3628473538631921463
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

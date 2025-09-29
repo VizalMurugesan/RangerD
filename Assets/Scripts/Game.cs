@@ -3,6 +3,9 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
 using System;
+using System.Collections;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 public class Game : MonoBehaviour
 {
@@ -20,6 +23,8 @@ public class Game : MonoBehaviour
 
     public GameObject MainmenuPanel;
 
+    public Vector4 AttackedColor;
+
     public enum SortingLayers { BaseGrass, BaseGround, path, VegetationBeforePlayer, StructuresBeforePlayer, VegetationOrstructures, Player, VegetationAfterPlayer, StructuresAfterPlayer, VegetationOrstructuresAfterPlayer, 
                                 Layer2ground,Layer2Structures, Layer2PropsBeforePlayer, playerLayer2, Layer2PropsAfterPlayer}
 
@@ -35,6 +40,15 @@ public class Game : MonoBehaviour
     public PathFinder pathFinder;
 
     public Item[] items;
+
+    public Coroutine stopCoroutine;
+
+    public CameraController mainCamera;
+
+    public CharcterLayerManager characterLayerManager;
+
+    
+    
 
     public void Awake()
     {
@@ -68,12 +82,15 @@ public class Game : MonoBehaviour
         NoticePanel = NoticePanelText.transform.parent.gameObject;
 
         levelManager = GetComponent<LevelManager>();
-        
-    }
 
-    //MainMenu Methods
-    #region
-    public void QuitGame()
+
+        
+
+}
+
+//MainMenu Methods
+#region
+public void QuitGame()
     {
         Application.Quit();
     }
@@ -166,7 +183,36 @@ public class Game : MonoBehaviour
         Instantiate(items[rand], pos, Quaternion.identity);
     }
 
+    IEnumerator StopGameCoroutine(float duration)
+    {
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(0.1f);
+        Time.timeScale = 1f;
+        stopCoroutine = null;
+    }
     
-    
+    public void StopGame(float duration)
+    {
+        if(stopCoroutine== null)
+        {
+            stopCoroutine = StartCoroutine(StopGameCoroutine(duration));
+        }
+    } 
 
+    public IEnumerator ChangePlayerColorToAttacked()
+    {
+
+        foreach(var rend in player.RendrList)
+        {
+            rend.color = AttackedColor;
+        }
+        yield return new WaitForSeconds(0.2f);
+        foreach (var rend in player.RendrList)
+        {
+            rend.color = new Vector4(1f, 1f, 1f, 1f);
+        }
+        yield break;
+    }
+
+    
 }

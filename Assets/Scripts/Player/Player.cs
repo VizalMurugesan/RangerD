@@ -52,6 +52,8 @@ public class Player : MonoBehaviour
     public enum Quadrant { first,  second, third , fourth};
     public Quadrant quadrant;
 
+
+    bool CanRun = true;
     
 
 
@@ -159,7 +161,11 @@ public class Player : MonoBehaviour
             anim.SetFloat("movementY", movementInput.y);
             Game.Instance.ChangeCursorToDefault();
 
-            if (Input.GetKey(KeyCode.LeftShift) && CanMove() &&playerStamina.CurrentValue>1f)
+            if(playerStamina.CurrentValue < 1f && CanRun)
+            {
+                StartCoroutine(EnterRunCooldown());
+            }
+            if (Input.GetKey(KeyCode.LeftShift) && CanRun)
             {
                 state = PlayerState.Running;
                 MovementSpeedInstance = RunSpeed;
@@ -388,6 +394,13 @@ public class Player : MonoBehaviour
     {
         if (state.Equals(PlayerState.Attacking)) { return false; } ;
         return true;
+    }
+
+    public IEnumerator EnterRunCooldown()
+    {
+        CanRun = false;
+        yield return new WaitUntil(playerStamina.IsBarFull);
+        CanRun = true;
     }
 
     public void ChangeStateCoroutine(IEnumerator coroutine)

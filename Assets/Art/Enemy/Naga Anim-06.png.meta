@@ -5,12 +5,6 @@ TextureImporter:
   - first:
       213: 5027088239825515218
     second: Naga Anim-06_0
-  - first:
-      213: 6660869022215304350
-    second: Naga Anim-06_1
-  - first:
-      213: 9152045321973688264
-    second: Naga Anim-06_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -111,8 +105,8 @@ TextureImporter:
         serializedVersion: 2
         x: 381
         y: 190
-        width: 536
-        height: 306
+        width: 531
+        height: 352
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -123,50 +117,6 @@ TextureImporter:
       bones: []
       spriteID: 2d2f7559e1ec3c540800000000000000
       internalID: 5027088239825515218
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Naga Anim-06_1
-      rect:
-        serializedVersion: 2
-        x: 916
-        y: 435
-        width: 8
-        height: 17
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e94fb8cb519207c50800000000000000
-      internalID: 6660869022215304350
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Naga Anim-06_2
-      rect:
-        serializedVersion: 2
-        x: 918
-        y: 447
-        width: 9
-        height: 11
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8c764801bb8920f70800000000000000
-      internalID: 9152045321973688264
       vertices: []
       indices: 
       edges: []
@@ -186,8 +136,6 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       Naga Anim-06_0: 5027088239825515218
-      Naga Anim-06_1: 6660869022215304350
-      Naga Anim-06_2: 9152045321973688264
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

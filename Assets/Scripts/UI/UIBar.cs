@@ -52,4 +52,13 @@ public class UIBar : MonoBehaviour
         Regen = null;
         yield break;
     }
+
+    public bool IsBarFull()
+    {
+        if(CurrentValue == MaximumValue)
+        {
+            return true;
+        }
+        return false;
+    }
 }

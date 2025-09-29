@@ -12,6 +12,9 @@ public class Arrow : MonoBehaviour
     Rigidbody2D body;
     ArrowSpawner.ArrowType ArrowType = ArrowSpawner.ArrowType.normal;
     TrailRenderer trail;
+    [SerializeField]float Range;
+    Coroutine main;
+    Vector2 SpawnPoint;
 
 
 
@@ -26,6 +29,7 @@ public class Arrow : MonoBehaviour
     {
         
         transform.position = spawnPoint.position;
+        SpawnPoint = spawnPoint.position;
         DisplayArrow(mainhandRotation);
         
         
@@ -36,7 +40,11 @@ public class Arrow : MonoBehaviour
         else { direction = Game.Instance.UpScaleNormalize(direction); }
         
         body.linearVelocity = direction * Velocity;
-
+        if (main != null)
+        {
+            StopCoroutine(main); 
+        }
+        main = StartCoroutine(Main());
         ArrowType = arrowType;
         
     }
@@ -71,8 +79,8 @@ public class Arrow : MonoBehaviour
                     enemyHealth.TakeDamage(damage);
                 }
             }
-            trail.Clear();
-            gameObject.SetActive(false);
+            
+            DisableArrow();
         }
 
     }
@@ -84,5 +92,26 @@ public class Arrow : MonoBehaviour
         if (objectHit.CompareTag("Vegetation")) { return false; }
         if (objectHit.CompareTag("PlayerPivot")) { return false; }
         return true;
+    }
+
+    void DisableArrow()
+    {
+        trail.Clear();
+        gameObject.SetActive(false);
+    }
+
+    public IEnumerator Main()
+    {
+        while (true)
+        {
+            if(Vector2.Distance(transform.position, SpawnPoint) >= Range)
+            {
+                DisableArrow();
+                yield break;
+                
+            }
+            Debug.Log("helly");
+            yield return null;
+        }
     }
 }

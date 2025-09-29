@@ -9,6 +9,9 @@ public class Character : MonoBehaviour
     public Vector3Int ManhattenDirec;
     public Node CurrentNode;
     public Animator anim;
+    public GameObject pivot;
+
+    public List<SpriteRenderer> renderers;
 
     public virtual void Start()
     {
@@ -93,5 +96,10 @@ public class Character : MonoBehaviour
         {
             LookLeft();
         }
+    }
+
+    public virtual void SetSortingOrder(int order, bool IsCharacterBelow)
+    {
+       
     }
 }

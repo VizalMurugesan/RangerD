@@ -19,7 +19,22 @@ public class EnemySpawn : MonoBehaviour
             //StartCoroutine(StartShowingReserved());
         }
 
+        
 
+
+    }
+
+    void ManageSortingLayer(Enemy enemy)
+    {
+        if(enemy.pivot.transform.position.y> Game.Instance.player.PlayerPivot.transform.position.y)
+        {
+            enemy.spriteRenderer.sortingOrder = -10;
+            
+        }
+        else
+        {
+            enemy.spriteRenderer.sortingOrder = 10;
+        }
     }
     IEnumerator StartShowingReserved()
     {
@@ -70,6 +85,7 @@ public class EnemySpawn : MonoBehaviour
     void SetAggro()
     {
         GroupAggro = true;
+        Game.Instance.characterLayerManager.CharactersInRange.AddRange(enemies);
         foreach(Enemy enemy in enemies)
         {
             enemy.SetAggroTrue();
@@ -87,7 +103,7 @@ public class EnemySpawn : MonoBehaviour
             {
                 if (!enemies[i].gameObject.activeInHierarchy) { enemies.RemoveAt(i); continue; }
                 EnemyState DecidedState = enemies[i].DecideState();
-                if (DecidedState != null) { Debug.Log(DecidedState.Name); DecidedState.StateActionInvoke(); }
+                if (DecidedState != null) { DecidedState.StateActionInvoke(); }
                 
             }
             if(enemies.Count == 0) { GroupAggro = false;  break; }

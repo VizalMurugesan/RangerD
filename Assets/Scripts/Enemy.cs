@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 using static UnityEngine.EventSystems.EventTrigger;
+using Unity.VisualScripting;
 
 public class Enemy : Character
 {
@@ -16,24 +17,30 @@ public class Enemy : Character
     public float AttackCooldown;
     public float EXPtogive;
     public int ignoreVal;
+    public float Shakemag;
+    
+    public float damage;
+    
     public enum EnemyStateEnum { Chilling, RunningToSpawn, Chasing, Attacking, None}
     public EnemyStateEnum state = EnemyStateEnum.None;
 
-    Coroutine moveCoroutine = null;
+    public Coroutine moveCoroutine = null;
 
     public List<EnemyState> EnemyStates;
 
     
     public int CurrentPathOffset = 2;
 
-    BoxCollider2D Box;
-    Rigidbody2D body;
+    public BoxCollider2D Box;
+    public Rigidbody2D body;
+    public SpriteRenderer spriteRenderer;
    
     public virtual void Start()
     {
         base.Start();
         SpawnPos = transform.position;
         CurrentPath = new List<Node>();
+        
         //STATES
         #region
         EnemyStates = new List<EnemyState>();
@@ -108,7 +115,7 @@ public class Enemy : Character
 
         }
 
-        yield return null;
+        
     }
 
     public bool ChasePlayerReq()
@@ -143,7 +150,7 @@ public class Enemy : Character
             }
             if (!gameObject.activeInHierarchy) { StopAllCoroutines(); }
             CurrentPath = path;
-            moveCoroutine = StartCoroutine(Move(2));
+            moveCoroutine = StartCoroutine(Move(1));
             
             
             
@@ -173,9 +180,10 @@ public class Enemy : Character
             t += Time.deltaTime;
             yield return null;
         }
-        if(Vector2.Distance(transform.position, Game.Instance.player.GetPlayerPosition()) < 0.5f)
+        if(Vector2.Distance(transform.position, Game.Instance.player.GetPlayerPosition()) < 1f)
         {
             Game.Instance.player.playerHealth.TakeDamage(20f);
+            StartCoroutine(Game.Instance.mainCamera.Shake(1,Shakemag));
         }
         Vector2 NewStartPos = EndPos;
         t = 0f;
@@ -214,9 +222,15 @@ public class Enemy : Character
         }
     }
 
+    public virtual void Die()
+    {
+        gameObject.SetActive(false);
+    }
+
     bool IsInAttackRange()
     {
         return MathF.Abs(Vector2.Distance(Game.Instance.player.GetPlayerPosition(), transform.position)) <= AttackRange;
+       
     }
 
     bool IsPlayerOutOfRange()
@@ -232,6 +246,14 @@ public class Enemy : Character
     bool IsInSpawnPos()
     {
         return MathF.Abs(Vector2.Distance(transform.position, SpawnPos)) <= 0.5f;
+    }
+
+    bool IsNearPlayer(int range)
+    {
+
+        List<Node> Distance = Game.Instance.pathFinder.FindPath(transform.position, Game.Instance.player.transform.position, this);
+        if (Distance.Count < range) { return true; }
+        return false;
     }
 
     #endregion
@@ -254,6 +276,39 @@ public class Enemy : Character
         IsAggroed = false;
     }
 
+    public void TurnToPlayer()
+    {
+        Debug.Log("turning player");
+        Vector2 distance = Game.Instance.player.GetPlayerPosition() - pivot.transform.position;
+        distance = distance.normalized;
+
+        if (distance.x >= 0.4f)
+        {
+            anim.SetFloat("DirectionX", 1f);
+        }
+        else if(distance.x >= -0.4f)
+        {
+            anim.SetFloat("DirectionX", 0f);
+        }
+        else
+        {
+            anim.SetFloat("DirectionX", -1f);
+        }
+        if(distance.y >= 0.4f)
+        {
+            anim.SetFloat("DirectionY", 1f);
+        }
+        else if (distance.y >= -0.4f)
+        {
+            anim.SetFloat("DirectionY", 0f);
+        }
+        else
+        {
+            anim.SetFloat("DirectionY", -1f);
+        }
+
+        
+    }
     
 }
 
@@ -293,6 +348,7 @@ public class EnemyState
         if(StateCoroutine!= null)
         {
             enemy.StartCoroutine(StateCoroutine());
+            return;
         }
         StateAction?.Invoke();
     }

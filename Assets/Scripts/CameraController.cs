@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
-using System;
-using static UnityEditor.PlayerSettings;
+
+using Random = UnityEngine.Random;
 
 public class CameraController : MonoBehaviour
 {
@@ -11,11 +11,13 @@ public class CameraController : MonoBehaviour
     public float Delay;
     public float duration;
     Coroutine moveCoroutine;
+    bool shaking = false;
+    public float shakemag;
 
     void LateUpdate()
     {
         
-        if (!IsCameraOnPlayer() && moveCoroutine==null)
+        if (!IsCameraOnPlayer() && moveCoroutine==null &&!shaking)
         {
             moveCoroutine = StartCoroutine(StartMovingTowardsPlayer());
         }
@@ -46,5 +48,35 @@ public class CameraController : MonoBehaviour
     {
         Vector2 pos = transform.position;
         return Vector2.Distance(pos,Game.Instance.player.transform.position)<0.001f;
+    }
+
+    public IEnumerator Shake(float duration, float magnitude)
+    {
+        shaking = true;
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+        }
+       
+        moveCoroutine = null;
+        Vector3 originalPos = transform.localPosition;
+
+        float elapsed = 0.0f;
+
+        while (elapsed < duration)
+        {
+            float offsetX = Random.Range(-1f, 1f) * shakemag;
+            float offsetY = Random.Range(-1f, 1f) * shakemag;
+
+            transform.localPosition = new Vector3(originalPos.x + offsetX, originalPos.y + offsetY, originalPos.z);
+
+            elapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        transform.localPosition = originalPos; // Reset to original position
+        shaking = false;
+        
     }
 }

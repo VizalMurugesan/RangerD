@@ -103,10 +103,10 @@ TextureImporter:
       name: Naga Anim-03_0
       rect:
         serializedVersion: 2
-        x: 272
-        y: 405
-        width: 991
-        height: 361
+        x: 549
+        y: 409
+        width: 516
+        height: 357
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

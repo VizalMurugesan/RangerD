@@ -47,6 +47,8 @@ public class Game : MonoBehaviour
 
     public CharcterLayerManager characterLayerManager;
 
+    public TimeManager timeManager;
+
     
     
 

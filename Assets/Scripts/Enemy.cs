@@ -18,8 +18,10 @@ public class Enemy : Character
     public float EXPtogive;
     public int ignoreVal;
     public float Shakemag;
-    
+    public int poisonCount = 0;
+    public bool isPoisoned = false;
     public float damage;
+    [SerializeField] float AffinityToPoison;
     
     public enum EnemyStateEnum { Chilling, RunningToSpawn, Chasing, Attacking, None}
     public EnemyStateEnum state = EnemyStateEnum.None;
@@ -30,7 +32,7 @@ public class Enemy : Character
 
     
     public int CurrentPathOffset = 2;
-
+    EnemyHealth health;
     public BoxCollider2D Box;
     public Rigidbody2D body;
     public SpriteRenderer spriteRenderer;
@@ -56,6 +58,7 @@ public class Enemy : Character
         
         Box = GetComponent<BoxCollider2D>();
         body = GetComponent<Rigidbody2D>();
+        health = GetComponent<EnemyHealth>();
     }
 
     
@@ -308,6 +311,33 @@ public class Enemy : Character
         }
 
         
+    }
+
+    public void ApplyPoisonedEffect()
+    {
+        if (isPoisoned)
+        {
+            return;
+        }
+        isPoisoned = true;
+        TimeManager tManager = Game.Instance.timeManager;
+        tManager.DoAnActionAfterTime(TakePoisonDamage, tManager.TotalTime + 1f);
+        tManager.DoAnActionAfterTime(TakePoisonDamage, tManager.TotalTime + 2f);
+        tManager.DoAnActionAfterTime(TakePoisonDamage, tManager.TotalTime + 3f);
+        tManager.DoAnActionAfterTime(TakePoisonDamage, tManager.TotalTime + 4f);
+        tManager.DoAnActionAfterTime(TakePoisonDamage, tManager.TotalTime + 5f);
+        Debug.Log("appliedeffect in enemy");
+    }
+
+    public void TakePoisonDamage()
+    {
+        health.TakeDamage(AffinityToPoison * 20);
+        Debug.Log("taking poison damage");
+        poisonCount++;
+        if(poisonCount == 5)
+        {
+            isPoisoned = false;
+        }
     }
     
 }

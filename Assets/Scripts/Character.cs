@@ -10,6 +10,8 @@ public class Character : MonoBehaviour
     public Node CurrentNode;
     public Animator anim;
     public GameObject pivot;
+    
+
 
     public List<SpriteRenderer> renderers;
 

@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 public class TimeManager : MonoBehaviour
 {
@@ -26,9 +29,11 @@ public class TimeManager : MonoBehaviour
     Color imageColor;
 
     //TimeOfTheDay nextTime;
-    float TotalTime = 0f;
+    public float TotalTime = 0f;
     float currentTimeCurrentduration = 0f;
     float TransitionTimeCurrentduration = 0f;
+    List<object> AllActionsToDo;
+
 
 
     private void Awake()
@@ -41,6 +46,8 @@ public class TimeManager : MonoBehaviour
         Night.SetNextTime(Morning);
         imageColor = image.color;
         currentTimeOfTheDay = Morning;
+        AllActionsToDo = new List<object>();
+        
 
     }
     public void FixedUpdate()
@@ -76,9 +83,29 @@ public class TimeManager : MonoBehaviour
                 ChangeStateToBasking();
             }
         }
+        ManageActionsToDo();
 
         TotalTime += Time.fixedDeltaTime;
         
+    }
+
+    void ManageActionsToDo()
+    {
+        if(AllActionsToDo == null)
+        {
+            return;
+        }
+        for(int i = 0;i<AllActionsToDo.Count;i++)
+        {
+            List<object> actionToDo = (List<object>)AllActionsToDo[i];
+            //Debug.Log(actionToDo.Count);
+            if ((float)actionToDo[1] <= TotalTime)
+            {
+                Action action = (Action)actionToDo[0];
+                action.Invoke();
+                AllActionsToDo.RemoveAt(i);
+            }
+        }
     }
 
     void ChangeToNextTime()
@@ -112,6 +139,18 @@ public class TimeManager : MonoBehaviour
         TransitionTimeCurrentduration = 0f;
         currentTimeCurrentduration = 0f;
     }
+
+    public void DoAnActionAfterTime(Action action, float executionTime)
+    {
+        List<object>ActionsToDo = new List<object>();
+        ActionsToDo.Add(action);
+        ActionsToDo.Add(executionTime);
+
+        AllActionsToDo.Add(ActionsToDo);
+        
+        
+    }
+
 }
 
 public class TimeOfTheDay

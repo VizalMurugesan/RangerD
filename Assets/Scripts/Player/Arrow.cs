@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -33,6 +34,7 @@ public class Arrow : MonoBehaviour
         DisplayArrow(mainhandRotation);
         
         
+        
         Vector2 direction = (TargetPos - transform.position);
         
         if (direction.magnitude>1f)
@@ -45,6 +47,7 @@ public class Arrow : MonoBehaviour
             StopCoroutine(main); 
         }
         main = StartCoroutine(Main());
+        //Game.Instance.timeManager.DoAnActionAfterTime(DisableArrow, 2000f);
         ArrowType = arrowType;
         
     }
@@ -110,7 +113,6 @@ public class Arrow : MonoBehaviour
                 yield break;
                 
             }
-            Debug.Log("helly");
             yield return null;
         }
     }

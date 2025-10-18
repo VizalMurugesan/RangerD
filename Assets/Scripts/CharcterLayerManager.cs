@@ -68,7 +68,14 @@ public class CharcterLayerManager : MonoBehaviour
 
     public bool IsCharacterAbovePlayer(Character character)
     {
-        return (Game.Instance.player.GetPlayerPosition().y <= character.pivot.transform.position.y);
+        if (character.pivot != null)
+        {
+            return (Game.Instance.player.GetPlayerPosition().y <= character.pivot.transform.position.y);
+        }
+        else
+        {
+            return (Game.Instance.player.GetPlayerPosition().y <= character.gameObject.transform.position.y);
+        }
     }
 
 }

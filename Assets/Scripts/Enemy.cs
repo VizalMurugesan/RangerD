@@ -2,8 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using System;
-using static UnityEngine.EventSystems.EventTrigger;
-using Unity.VisualScripting;
+
 
 public class Enemy : Character
 {
@@ -17,13 +16,16 @@ public class Enemy : Character
     public float AttackCooldown;
     public float EXPtogive;
     public int ignoreVal;
-    public float Shakemag;
+    
+    public enum SlimeType { NotSlime, PoisonSlime, AverageSlime}
+    public SlimeType type;
+
     public int poisonCount = 0;
     public bool isPoisoned = false;
     public float damage;
     [SerializeField] float AffinityToPoison;
     
-    public enum EnemyStateEnum { Chilling, RunningToSpawn, Chasing, Attacking, None}
+    public enum EnemyStateEnum { Chilling, RunningToSpawn, Chasing, Attacking, None, Flock}
     public EnemyStateEnum state = EnemyStateEnum.None;
 
     public Coroutine moveCoroutine = null;
@@ -32,11 +34,18 @@ public class Enemy : Character
 
     
     public int CurrentPathOffset = 2;
-    EnemyHealth health;
+    public EnemyHealth health;
     public BoxCollider2D Box;
     public Rigidbody2D body;
-    public SpriteRenderer spriteRenderer;
-   
+    
+
+    [Header("Camera Shake Variables")]
+    public float ShakeDuration;
+    public float Mag;
+
+    [Header("390")]
+    public float PressureValue;
+
     public virtual void Start()
     {
         base.Start();
@@ -59,6 +68,8 @@ public class Enemy : Character
         Box = GetComponent<BoxCollider2D>();
         body = GetComponent<Rigidbody2D>();
         health = GetComponent<EnemyHealth>();
+        
+        
     }
 
     
@@ -105,6 +116,8 @@ public class Enemy : Character
         {
             state = EnemyStateEnum.RunningToSpawn;
             IsAggroed = false;
+            //yield return new WaitUntil(IsNotStalled);
+
             if (moveCoroutine != null) StopCoroutine(moveCoroutine);
             CurrentPath = path;
             moveCoroutine = StartCoroutine(Move(0));
@@ -131,8 +144,10 @@ public class Enemy : Character
     }
     public void ChasePlayer()
     {
+        
         if ((IsPlayerOutOfRange() || IsInAttackRange()) && moveCoroutine != null)
         {
+            
             StopCoroutine(moveCoroutine);
             state = EnemyStateEnum.None;
             
@@ -140,11 +155,13 @@ public class Enemy : Character
         }
         state = EnemyStateEnum.Chasing;
         IsAggroed = true;
-        SetCurrentpathReservedToFalse();
+        if (CurrentPath!=null) { SetCurrentpathReservedToFalse(); }
         List<Node> path = Game.Instance.pathFinder.FindPath(transform.position, Game.Instance.player.GetPlayerPosition(), this);
         if (path != null)
         {
+
             
+
             if (moveCoroutine != null)
             {
                 
@@ -186,7 +203,7 @@ public class Enemy : Character
         if(Vector2.Distance(transform.position, Game.Instance.player.GetPlayerPosition()) < 1f)
         {
             Game.Instance.player.playerHealth.TakeDamage(20f);
-            StartCoroutine(Game.Instance.mainCamera.Shake(1,Shakemag));
+            StartCoroutine(Game.Instance.mainCamera.Shake(ShakeDuration, Mag));
         }
         Vector2 NewStartPos = EndPos;
         t = 0f;
@@ -228,6 +245,11 @@ public class Enemy : Character
     public virtual void Die()
     {
         gameObject.SetActive(false);
+        if (type.Equals(SlimeType.PoisonSlime))
+        {
+            Game.Instance.EffectManager.EnablePoisonEffect((Vector2)transform.position);
+        }
+        
     }
 
     bool IsInAttackRange()
@@ -319,6 +341,7 @@ public class Enemy : Character
         {
             return;
         }
+        poisonCount = 0;
         isPoisoned = true;
         TimeManager tManager = Game.Instance.timeManager;
         tManager.DoAnActionAfterTime(TakePoisonDamage, tManager.TotalTime + 1f);
@@ -331,12 +354,33 @@ public class Enemy : Character
 
     public void TakePoisonDamage()
     {
+        TurnEnemyColorToGreen();
         health.TakeDamage(AffinityToPoison * 20);
         Debug.Log("taking poison damage");
         poisonCount++;
         if(poisonCount == 5)
         {
             isPoisoned = false;
+        }
+        Game.Instance.timeManager.DoAnActionAfterTime(TurnEnemyColorToNormal,
+            Game.Instance.timeManager.TotalTime + 0.2f);
+    }
+
+    public void TurnEnemyColorToGreen()
+    {
+        foreach(SpriteRenderer rend in renderers)
+        {
+            Color color = new Vector4(0f, 1f, 0f, 0.6f);
+            rend.color = color;
+            Debug.Log("Changed Color");
+        }
+    }
+
+    public void TurnEnemyColorToNormal()
+    {
+        foreach (SpriteRenderer rend in renderers)
+        {
+            rend.color = new Vector4(1, 1, 1, 1f);
         }
     }
     

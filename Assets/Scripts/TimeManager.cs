@@ -18,14 +18,11 @@ public class TimeManager : MonoBehaviour
     [SerializeField]float NightDuration;
     [SerializeField] float Transitionduration;
 
-    [SerializeField] Sprite MorningSprite;
-    [SerializeField] Sprite EveningSprite;
-    [SerializeField] Sprite NightSprite;
+    
     public TimeOfTheDay currentTimeOfTheDay;
 
     public Image image;
-    [SerializeField] Image SpriteSpace;
-    [SerializeField] TextMeshProUGUI text;
+   
     Color imageColor;
 
     //TimeOfTheDay nextTime;
@@ -38,9 +35,9 @@ public class TimeManager : MonoBehaviour
 
     private void Awake()
     {
-        TimeOfTheDay Morning = new TimeOfTheDay(MorningDuration, new Vector4(0f, 0f, 0f, 0f), Timeoftheday.Morning, MorningSprite);
-        TimeOfTheDay Evening = new TimeOfTheDay(EveningDuration, new Vector4(100f/255f, 0f, 50f/255f, 150f / 255f), Timeoftheday.Evening, EveningSprite);
-        TimeOfTheDay Night = new TimeOfTheDay(NightDuration, new Vector4(0f, 0f, 50f / 255f, 200f/255f), Timeoftheday.Night, NightSprite);
+        TimeOfTheDay Morning = new TimeOfTheDay(MorningDuration, new Vector4(0f, 0f, 0f, 0f), Timeoftheday.Morning);
+        TimeOfTheDay Evening = new TimeOfTheDay(EveningDuration, new Vector4(100f/255f, 0f, 50f/255f, 150f / 255f), Timeoftheday.Evening);
+        TimeOfTheDay Night = new TimeOfTheDay(NightDuration, new Vector4(0f, 0f, 50f / 255f, 200f/255f), Timeoftheday.Night);
         Morning.SetNextTime(Evening);
         Evening.SetNextTime(Night);
         Night.SetNextTime(Morning);
@@ -119,8 +116,7 @@ public class TimeManager : MonoBehaviour
     {
         State = ManagerState.Basking;
         ChangeToNextTime();
-        SpriteSpace.sprite = currentTimeOfTheDay.GetSprite();
-        text.text = time.ToString();
+       
         TransitionTimeCurrentduration = 0f;
         currentTimeCurrentduration = 0f;
     }
@@ -128,8 +124,7 @@ public class TimeManager : MonoBehaviour
     void ChangeSpriteAndTextToCurrent()
     {
         time = currentTimeOfTheDay.GetNextTimeOfTheDay().GetTime();
-        SpriteSpace.sprite = currentTimeOfTheDay.GetNextTimeOfTheDay().GetSprite();
-        text.text = time.ToString();
+        
     }
 
     void ChangeStateToTransitioning()
@@ -159,14 +154,14 @@ public class TimeOfTheDay
     Vector4 RGBval;
     TimeManager.Timeoftheday time;
     TimeOfTheDay nextTime;
-    Sprite sprite;
+    
 
-    public TimeOfTheDay(float duration, Vector4 RGBval, TimeManager.Timeoftheday time, Sprite sprite)
+    public TimeOfTheDay(float duration, Vector4 RGBval, TimeManager.Timeoftheday time)
     {
         this.duration = duration;
         this.RGBval = RGBval;
         this.time = time;
-        this.sprite = sprite;
+        
     }
 
     public void SetNextTime(TimeOfTheDay nextTime)
@@ -194,9 +189,6 @@ public class TimeOfTheDay
         return RGBval;
     }
 
-    public Sprite GetSprite()
-    {
-        return sprite;
-    }
+    
 }
 

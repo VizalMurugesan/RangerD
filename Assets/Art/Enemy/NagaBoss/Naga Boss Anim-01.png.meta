@@ -1,0 +1,867 @@
+fileFormatVersion: 2
+guid: 6726b9439e5f53f4b8f972340cdeb59b
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3024707234857165607
+    second: Naga Boss Anim-01_0
+  - first:
+      213: 8690971040478355550
+    second: Naga Boss Anim-01_1
+  - first:
+      213: 4979320195716524596
+    second: Naga Boss Anim-01_2
+  - first:
+      213: 8991299263320081289
+    second: Naga Boss Anim-01_3
+  - first:
+      213: -8179533504983740754
+    second: Naga Boss Anim-01_4
+  - first:
+      213: -6109594162085673602
+    second: Naga Boss Anim-01_5
+  - first:
+      213: -6113076893194063440
+    second: Naga Boss Anim-01_6
+  - first:
+      213: -3324423625863995998
+    second: Naga Boss Anim-01_7
+  - first:
+      213: -4467389732598119916
+    second: Naga Boss Anim-01_8
+  - first:
+      213: -6457936968811538706
+    second: Naga Boss Anim-01_9
+  - first:
+      213: 4720096780851158049
+    second: Naga Boss Anim-01_10
+  - first:
+      213: 6159435814904515316
+    second: Naga Boss Anim-01_11
+  - first:
+      213: -6722176198995620533
+    second: Naga Boss Anim-01_12
+  - first:
+      213: 5224969294470003101
+    second: Naga Boss Anim-01_13
+  - first:
+      213: 6599581793404875808
+    second: Naga Boss Anim-01_14
+  - first:
+      213: 7568640921051212258
+    second: Naga Boss Anim-01_15
+  - first:
+      213: 150966850560848745
+    second: Naga Boss Anim-01_16
+  - first:
+      213: 1372976210565958796
+    second: Naga Boss Anim-01_17
+  - first:
+      213: -1803262912551506303
+    second: Naga Boss Anim-01_18
+  - first:
+      213: 5370942676547312892
+    second: Naga Boss Anim-01_19
+  - first:
+      213: -4365332620867552440
+    second: Naga Boss Anim-01_20
+  - first:
+      213: -171304973852754405
+    second: Naga Boss Anim-01_21
+  - first:
+      213: 4080290452354756629
+    second: Naga Boss Anim-01_22
+  - first:
+      213: -2443388866814084036
+    second: Naga Boss Anim-01_23
+  - first:
+      213: 2896889846835679712
+    second: Naga Boss Anim-01_24
+  - first:
+      213: -5425755544753016309
+    second: Naga Boss Anim-01_25
+  - first:
+      213: -1597193603563067248
+    second: Naga Boss Anim-01_26
+  - first:
+      213: 6761033086469581739
+    second: Naga Boss Anim-01_27
+  - first:
+      213: 1927103817942947603
+    second: Naga Boss Anim-01_28
+  - first:
+      213: 2116003375236547939
+    second: Naga Boss Anim-01_29
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_0
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 4179
+        width: 330
+        height: 300
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 723273b543be9f920800000000000000
+      internalID: 3024707234857165607
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_1
+      rect:
+        serializedVersion: 2
+        x: 481
+        y: 4183
+        width: 328
+        height: 297
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e506be45d188c9870800000000000000
+      internalID: 8690971040478355550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_2
+      rect:
+        serializedVersion: 2
+        x: 983
+        y: 4168
+        width: 328
+        height: 296
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43aac9026591a1540800000000000000
+      internalID: 4979320195716524596
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_3
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 3776
+        width: 330
+        height: 300
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 983cc63ca0387cc70800000000000000
+      internalID: 8991299263320081289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_4
+      rect:
+        serializedVersion: 2
+        x: 492
+        y: 3779
+        width: 313
+        height: 296
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eaec90f3d957c7e80800000000000000
+      internalID: -8179533504983740754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_5
+      rect:
+        serializedVersion: 2
+        x: 990
+        y: 3767
+        width: 320
+        height: 294
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e754517ca7c563ba0800000000000000
+      internalID: -6109594162085673602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_6
+      rect:
+        serializedVersion: 2
+        x: 1441
+        y: 3765
+        width: 311
+        height: 295
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b1f48044fcf92ba0800000000000000
+      internalID: -6113076893194063440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_7
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 3310
+        width: 307
+        height: 296
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2add57963564dd1d0800000000000000
+      internalID: -3324423625863995998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_8
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 3315
+        width: 99
+        height: 294
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 412034b15b4a002c0800000000000000
+      internalID: -4467389732598119916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_9
+      rect:
+        serializedVersion: 2
+        x: 1101
+        y: 3321
+        width: 118
+        height: 290
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee61020ea8cc066a0800000000000000
+      internalID: -6457936968811538706
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_10
+      rect:
+        serializedVersion: 2
+        x: 1565
+        y: 3336
+        width: 117
+        height: 291
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12c19189307218140800000000000000
+      internalID: 4720096780851158049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_11
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 2865
+        width: 199
+        height: 275
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4fac3345d36ba7550800000000000000
+      internalID: 6159435814904515316
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_12
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 2424
+        width: 329
+        height: 325
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4dc745dc5806b2a0800000000000000
+      internalID: -6722176198995620533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_13
+      rect:
+        serializedVersion: 2
+        x: 491
+        y: 2428
+        width: 327
+        height: 333
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d993537e3e1d28840800000000000000
+      internalID: 5224969294470003101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_14
+      rect:
+        serializedVersion: 2
+        x: 958
+        y: 2429
+        width: 328
+        height: 319
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 024780eccac669b50800000000000000
+      internalID: 6599581793404875808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_15
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 2007
+        width: 329
+        height: 325
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e92ebb31d6390960800000000000000
+      internalID: 7568640921051212258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_16
+      rect:
+        serializedVersion: 2
+        x: 526
+        y: 1997
+        width: 300
+        height: 337
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 963f98cfc87581200800000000000000
+      internalID: 150966850560848745
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_17
+      rect:
+        serializedVersion: 2
+        x: 1002
+        y: 1971
+        width: 295
+        height: 358
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8c88d3d69acd0310800000000000000
+      internalID: 1372976210565958796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_18
+      rect:
+        serializedVersion: 2
+        x: 1550
+        y: 1957
+        width: 267
+        height: 372
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18e2bb46fe589f6e0800000000000000
+      internalID: -1803262912551506303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_19
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 1546
+        width: 307
+        height: 297
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfc969868eb698a40800000000000000
+      internalID: 5370942676547312892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_20
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 1160
+        width: 313
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84bb3ce1c193b63c0800000000000000
+      internalID: -4365332620867552440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_21
+      rect:
+        serializedVersion: 2
+        x: 529
+        y: 1172
+        width: 323
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1ebf3da8076f9df0800000000000000
+      internalID: -171304973852754405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_22
+      rect:
+        serializedVersion: 2
+        x: 1030
+        y: 1159
+        width: 319
+        height: 299
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 510f5015c8a10a830800000000000000
+      internalID: 4080290452354756629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_23
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 774
+        width: 317
+        height: 318
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3cf66175c6571ed0800000000000000
+      internalID: -2443388866814084036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_24
+      rect:
+        serializedVersion: 2
+        x: 521
+        y: 777
+        width: 301
+        height: 315
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e19312a7f1d33820800000000000000
+      internalID: 2896889846835679712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_25
+      rect:
+        serializedVersion: 2
+        x: 1019
+        y: 769
+        width: 305
+        height: 304
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b02f3e43418d3b4b0800000000000000
+      internalID: -5425755544753016309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_26
+      rect:
+        serializedVersion: 2
+        x: 1470
+        y: 764
+        width: 293
+        height: 309
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 098e81e31e0a5d9e0800000000000000
+      internalID: -1597193603563067248
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_27
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 327
+        width: 316
+        height: 318
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: babaea945c304dd50800000000000000
+      internalID: 6761033086469581739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_28
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 321
+        width: 329
+        height: 291
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 317d9c156b27eba10800000000000000
+      internalID: 1927103817942947603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Naga Boss Anim-01_29
+      rect:
+        serializedVersion: 2
+        x: 1093
+        y: 317
+        width: 345
+        height: 313
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3658084dbdd8d5d10800000000000000
+      internalID: 2116003375236547939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable: {}
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -4,10 +4,6 @@ using UnityEngine;
 public class Naga : Enemy
 {
     public float AnticipationDuration;
-
-    [Header("Camera Shake Variables")]
-    public float ShakeDuration;
-    public float Mag;
     public GameObject MainHand;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Start()

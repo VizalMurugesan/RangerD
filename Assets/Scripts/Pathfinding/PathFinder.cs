@@ -6,10 +6,12 @@ using System.Linq;
 using UnityEngine;
 
 
+
 public class PathFinder : MonoBehaviour
 {
     public TileManager tileManager;
     public Grid2D grid;
+    public GameObject hebug;
 
     private void Awake()
     {
@@ -112,7 +114,7 @@ public class PathFinder : MonoBehaviour
             
             foreach (Node neighbour in grid.GetNeighbours(curr))
             {
-                
+                if(grid.GetNode(neighbour.x, neighbour.y)==null) { continue; }
                 if (!grid.GetNode(neighbour.x, neighbour.y).IsWalkable) { continue; }
                 //if (IsCharacterOnNode(neighbour.x, neighbour.y)) { continue; }
                 
@@ -143,6 +145,79 @@ public class PathFinder : MonoBehaviour
 
 
         
+        return path;
+    }
+
+
+    public List<Node> FindPath(Vector3 StartPos, Vector3 TargetPos)
+    {
+
+
+        List<Node> path = new List<Node>();
+
+        Node startNode = GetNodeFromWorldPos(StartPos);
+        Node targetNode = GetNodeFromWorldPos(TargetPos);
+
+
+
+        PriorityQueue<Node, float> openSet = new PriorityQueue<Node, float>();
+
+        Dictionary<Vector3Int, float> pathCost = new Dictionary<Vector3Int, float>(); //tracks g score
+        Dictionary<Vector3Int, float> estimatedtotalCost = new Dictionary<Vector3Int, float>(); // tracks f score
+        Dictionary<Vector3Int, Vector3Int> cameFrom = new Dictionary<Vector3Int, Vector3Int>();
+
+
+        openSet.Enqueue(startNode, 0f);
+        pathCost.Add(startNode.Cell, 0f);
+        estimatedtotalCost.Add(startNode.Cell, GetDistance(startNode, targetNode));
+
+
+
+        while (openSet.Count > 0)
+        {
+
+            Node curr = openSet.Dequeue();
+            if (curr.Cell.Equals(targetNode.Cell))
+            {
+                path = ReconstructPath(cameFrom, curr.Cell);
+
+                return path;
+            }
+
+
+            foreach (Node neighbour in grid.GetNeighbours(curr))
+            {
+                if (grid.GetNode(neighbour.x, neighbour.y) == null) { continue; }
+                if (!grid.GetNode(neighbour.x, neighbour.y).IsWalkable) { continue; }
+                //if (IsCharacterOnNode(neighbour.x, neighbour.y)) { continue; }
+
+
+                float newGcost = pathCost[curr.Cell] + GetCost(neighbour, curr);
+
+
+
+                if (!pathCost.ContainsKey(neighbour.Cell))
+
+                {
+
+                    pathCost.Add(neighbour.Cell, newGcost);
+                    cameFrom.Add(neighbour.Cell, curr.Cell);
+                    estimatedtotalCost[neighbour.Cell] = newGcost + GetDistance(neighbour, targetNode);
+                    openSet.Enqueue(neighbour, estimatedtotalCost[neighbour.Cell]);
+                }
+                else if (newGcost < pathCost[neighbour.Cell])
+                {
+
+                    pathCost[neighbour.Cell] = newGcost;
+                    cameFrom[neighbour.Cell] = curr.Cell;
+                    estimatedtotalCost[neighbour.Cell] = newGcost + GetDistance(neighbour, targetNode);
+                    openSet.Enqueue(neighbour, estimatedtotalCost[neighbour.Cell]);
+                }
+            }
+        }
+
+
+
         return path;
     }
 
@@ -185,6 +260,7 @@ public class PathFinder : MonoBehaviour
 
     private float GetDistance(Node a, Node b)
     {
+
         int dstX = Mathf.Abs(a.Cell.x - b.Cell.x);
         int dstY = Mathf.Abs(a.Cell.y - b.Cell.y);
 
@@ -197,6 +273,14 @@ public class PathFinder : MonoBehaviour
     {
         float Cost = 1f;
         if(node.isReserved) {  Cost+= 5f; }
+        //if (IsNeighbourDiagonal(current, node)) { Cost*= 1.5f; }
+        //if(character.CurrentPath.Contains(node)){ Cost /= 1.5f; }
+        return Cost;
+    }
+    float GetCost(Node node, Node current)
+    {
+        float Cost = 1f;
+        if (node.isReserved) { Cost += 5f; }
         //if (IsNeighbourDiagonal(current, node)) { Cost*= 1.5f; }
         //if(character.CurrentPath.Contains(node)){ Cost /= 1.5f; }
         return Cost;
@@ -215,7 +299,27 @@ public class PathFinder : MonoBehaviour
         return Physics2D.OverlapBox(grid.GetNode(x,y).WorldPos, new Vector2(0.9f, 0.9f), 0f, mask);
     }
    
+    public bool IsCordOutttaWorld(Vector3 pos)
+    {
+        // Convert world position to cell position
+        Vector3Int cell = tileManager.grid.WorldToCell(pos);
 
+        // Check if the cell is outside map bounds
+        if (cell.x < 0 || cell.y < 0 ||
+            cell.x >= tileManager.MapWidth || cell.y >= tileManager.MapHeight)
+        {
+            return true; // outside world
+        }
+
+        // Optionally check if node actually exists and is walkable
+        Node node = grid.GetNode(cell.x, cell.y);
+        if (node == null || !node.IsWalkable)
+        {
+            return true;
+        }
+
+        return false;
+    }
 
 }
 
